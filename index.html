@@ -14,7 +14,7 @@ button,select,input{font:inherit;color:inherit}
 #app{display:grid;grid-template-rows:auto auto 1fr;height:100vh}
 header{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--pn);border-bottom:1px solid var(--bd);flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;margin-right:6px}
-.logo{width:34px;height:34px;border-radius:8px;background:var(--ac);display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff}
+.logo{min-width:34px;height:34px;padding:0 8px;border-radius:8px;white-space:nowrap;background:var(--ac);display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff}
 .brand small{display:block;color:var(--ac);font-size:10px;font-weight:600;letter-spacing:.06em}
 .brand b{font-size:15px}
 .seg{display:flex;gap:4px;background:#0a1324;border:1px solid var(--bd);border-radius:10px;padding:3px;flex-wrap:wrap}
@@ -41,7 +41,13 @@ main{display:grid;grid-template-columns:1fr 360px;min-height:0}
 .labels{position:absolute;inset:0;pointer-events:none}
 aside{border-left:1px solid var(--bd);background:var(--pn);overflow:auto;min-height:0}
 .overlay{position:absolute;display:flex;gap:6px;z-index:5}
-.ov-tr{top:10px;right:10px;flex-direction:column}
+.ov-tr{top:10px;right:10px;flex-direction:column;align-items:center}
+.zbox{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(15,23,42,.92);border:1px solid var(--bd);border-radius:10px;padding:5px 0}
+.zbox .ib{border:0;background:none;width:32px;height:28px;font-size:18px;font-weight:700}
+#zr{writing-mode:vertical-lr;direction:rtl;width:22px;height:150px;accent-color:var(--ac);cursor:pointer}
+#zl{font-size:10.5px;color:var(--mu);font-variant-numeric:tabular-nums}
+.zpre{display:flex;flex-direction:column;gap:3px}.zpre button{font-size:10.5px;width:44px;padding:3px 0;border-radius:6px;border:1px solid var(--bd);background:rgba(15,23,42,.92);cursor:pointer;color:var(--mu)}
+.zpre button:hover{border-color:var(--ac);color:var(--ac)}
 .ov-bl{left:10px;bottom:10px;flex-direction:column;gap:4px;background:rgba(10,19,36,.88);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;font-size:11.5px;max-width:330px}
 .ov-bl .row{display:flex;flex-wrap:wrap;gap:4px 10px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:-1px}
@@ -128,7 +134,7 @@ a.chip{text-decoration:none;color:var(--tx)}
 <body>
 <div id="app">
   <header>
-    <div class="brand"><div class="logo">3D</div><div><small>PSD 3D-eNGINNo</small><b>IFM SMART BUILDING</b></div></div>
+    <div class="brand"><div class="logo">3D-iFM</div><div><small>PSD 3D-eNGINNo</small><b>IFM SMART BUILDING</b></div></div>
     <div class="seg" id="bsel"></div>
     <div class="sp"></div>
     <span class="chip src" id="srcBtn" title="สลับแหล่งข้อมูล: ข้อมูล IFM จริง / Demo 3D"></span>
@@ -152,6 +158,13 @@ a.chip{text-decoration:none;color:var(--tx)}
         <button class="ib" id="vTop" title="มุมบน (Plan)">▦</button>
         <button class="ib" id="vRot" title="หมุนอัตโนมัติ">⟳</button>
         <button class="ib on" id="vLbl" title="แสดง/ซ่อนป้ายชื่อ">🏷</button>
+        <div class="zbox" title="ซูม: ล้อเมาส์ / ปุ่ม + − / ลากแถบ / คีย์บอร์ด + −">
+          <button class="ib" id="zIn" title="ซูมเข้า (+)">＋</button>
+          <input type="range" id="zr" min="0" max="100" step="1" value="40" aria-label="ระดับซูม">
+          <button class="ib" id="zOut" title="ซูมออก (−)">－</button>
+          <span id="zl">Lv 4</span>
+        </div>
+        <div class="zpre"><button data-z="8">ทั้งตึก</button><button data-z="28">ชั้น</button><button data-z="50">โซน</button><button data-z="68">ห้อง</button><button data-z="86">ใกล้ชิด</button></div>
       </div>
       <div class="overlay ov-bl">
         <div class="row">
@@ -169,7 +182,7 @@ a.chip{text-decoration:none;color:var(--tx)}
           <span><span class="ic fr">ว่าง</span></span>
         </div>
       </div>
-      <div class="hint">ลาก = หมุน · คลิกขวาลาก = เลื่อน · ล้อ = ซูม · ชี้ = ดูสถานะ · คลิก = เปิดรายละเอียด</div>
+      <div class="hint">ลาก = หมุน · คลิกขวาลาก = เลื่อน · ล้อ/＋－ = ซูม (ตรงตำแหน่งเมาส์) · ดับเบิลคลิก = ซูมเข้าจุดนั้น · 0 = มุมเริ่มต้น</div>
     </div>
     <aside id="panel"></aside>
   </main>
@@ -441,7 +454,7 @@ const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0b1220);
 scene.fog = new THREE.Fog(0x0b1220, 90, 190);
 const camera = new THREE.PerspectiveCamera(40,1,.3,500);
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; controls.maxPolarAngle = 1.42; controls.minDistance = 6; controls.maxDistance = 140;
+controls.enableDamping = true; controls.maxPolarAngle = 1.42; controls.minDistance = 2.5; controls.maxDistance = 300; controls.zoomSpeed = 1.15; controls.zoomToCursor = true; controls.screenSpacePanning = true;
 scene.add(new THREE.HemisphereLight(0xdbeafe,0x1e293b,1.25));
 const sun = new THREE.DirectionalLight(0xffffff,1.7); sun.position.set(22,45,18); sun.castShadow = true;
 sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-32,right:32,top:32,bottom:-32,near:1,far:120});
@@ -1066,6 +1079,21 @@ function tweenCam(pos,tgt){ tw={p0:camera.position.clone(),t0:controls.target.cl
 function camPreset(){ const v=RT.view||{cx:0,cz:0,size:46,h:14}, k=v.size/46;
   if(VIEW==='ALL'){ const d=Math.max(92*k,v.h*1.25+60*k), t=new THREE.Vector3(v.cx,v.h*.5,v.cz), dir=new THREE.Vector3(.55,.42,.72).normalize(); tweenCam(t.clone().addScaledVector(dir,d),t); }
   else tweenCam(new THREE.Vector3(v.cx+6*k,36*k,v.cz+40*k),new THREE.Vector3(v.cx,0,v.cz+1)); }
+/* ---------- multi-level zoom (10 ระดับ + ต่อเนื่อง) ---------- */
+const ZMIN=3, ZMAX=220, zDist=v=>ZMIN*Math.pow(ZMAX/ZMIN,1-v/100), zVal=d=>100*(1-Math.log(Math.max(ZMIN,Math.min(ZMAX,d))/ZMIN)/Math.log(ZMAX/ZMIN));
+function zoomTo(dist,instant){ const dir=camera.position.clone().sub(controls.target); if(dir.lengthSq()<1e-6) dir.set(0,1,1); dir.setLength(Math.max(ZMIN,Math.min(ZMAX,dist)));
+  const p=controls.target.clone().add(dir); if(instant){ camera.position.copy(p); controls.update(); } else tweenCam(p,controls.target.clone()); }
+const curDist=()=>camera.position.distanceTo(controls.target);
+function zoomUI(){ const v=zVal(curDist()); $('zr').value=Math.round(v); $('zl').textContent='Lv '+(1+Math.min(9,Math.floor(v/10))); }
+$('zIn').onclick=()=>zoomTo(curDist()/1.45); $('zOut').onclick=()=>zoomTo(curDist()*1.45);
+$('zr').oninput=e=>{ tw=null; zoomTo(zDist(+e.target.value),true); };
+document.querySelector('.zpre').onclick=e=>{ const b=e.target.closest('[data-z]'); if(b) zoomTo(zDist(+b.dataset.z)); };
+controls.addEventListener('change',zoomUI);
+addEventListener('keydown',e=>{ if(/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if(e.key==='+'||e.key==='=') zoomTo(curDist()/1.3); else if(e.key==='-'||e.key==='_') zoomTo(curDist()*1.3); else if(e.key==='0') camPreset(); });
+renderer.domElement.addEventListener('dblclick',ev=>{ const p=pick(ev); if(!p) return; const o=(p.asset||p.agent)?p.obj:null;
+  if(o){ const w=new THREE.Vector3(); o.getWorldPosition(w); const d=Math.max(4,curDist()*.45), dir=camera.position.clone().sub(controls.target).setLength(d); tweenCam(w.clone().add(dir),w); }
+  else if(p.room) focusRoom(p.room.def.id); });
 function focusRoom(id){ const rc=RT.rooms.get(id); if(!rc) return; const p=new THREE.Vector3(); rc.g.getWorldPosition(p); const s=Math.max(rc.def.w,rc.def.d);
   tweenCam(new THREE.Vector3(p.x+s*.25,p.y+s*1.05+4,p.z+s*1.0+4),p); }
 
