@@ -1,72 +1,196 @@
-# PSD 3D-eNGINNo IFM SMART BUILDING
+# 3D-iFM · PSD 3D-eNGINNo IFM SMART BUILDING
 
-ระบบบริหารอาคารแบบ 3D + หลังบ้าน IFM (Hard + Soft Services) ใช้ฐานข้อมูลเดียวกันบน Google Sheets
+ระบบบริหารอาคารแบบ **3D** + **หลังบ้าน IFM** (Hard + Soft Services) ใช้ฐานข้อมูลกลางเดียวกันบน **Google Sheets**
 
-| ไฟล์ | คืออะไร |
-|---|---|
-| `index.html` | **หน้าหลัก 3D Smart Building** – อาคาร 3D ที่สร้างจากพื้นที่จริงใน IFM, มีคน/เครื่องจักรเคลื่อนไหว, แจ้งซ่อม/ปิดงาน/ส่งแม่บ้าน/จองห้องประชุมได้จากโมเดล |
-| `admin.html` | **หลังบ้าน (Back Office)** – IFM Management เดิมทุกโมดูล: Command Center, Helpdesk, Engineering, Facility, Housekeeping, Security, Pest, Garden, Linen, Manpower, Vendor, SLA/KPI, Users |
-| `mobile.html` | **IFM Mobile** – สำหรับช่าง / แม่บ้าน / ผู้แจ้งงาน |
-| `apps-script/Code.gs` | **Backend** (Google Apps Script) – สร้าง/อ่าน/เขียนฐานข้อมูล Google Sheets, ระบบผู้ใช้ + สิทธิ์ |
-| `apps-script/appsscript.json` | Manifest ของ Apps Script (ไม่บังคับ) |
+🌐 **เว็บไซต์:** https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/
 
-ทั้ง 3 หน้าใช้ **บัญชีผู้ใช้, การตั้งค่า, ข้อมูลชุดเดียวกัน** เมื่อเปิดจากเว็บเดียวกัน (GitHub Pages)
+| หน้า | ลิงก์ | ใช้ทำอะไร |
+|---|---|---|
+| 🧊 3D Smart Building | [`/`](https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/) | ดูอาคาร 3D ทั้งตึก ห้อง เครื่องจักร คน และงานซ่อมแบบเรียลไทม์ |
+| 🖥 หลังบ้าน (Back Office) | [`/admin.html`](https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/admin.html) | จัดการทุกโมดูล IFM, ผู้ใช้, ตั้งค่าอาคาร |
+| 📱 Mobile | [`/mobile.html`](https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/mobile.html) | ช่าง / แม่บ้าน / ผู้แจ้งงาน ใช้บนมือถือ |
 
 ---
 
-## 1) อัปขึ้น GitHub Pages
-1. อัปโหลด `index.html`, `admin.html`, `mobile.html`, `README.md` และโฟลเดอร์ `apps-script/` ไปที่ root ของ repo
-2. Settings → Pages → Source: **Deploy from a branch** → Branch `main` / `(root)` → Save
-3. เปิด `https://<user>.github.io/<repo>/` → จะเข้าหน้า 3D ทันที
+## 📁 ไฟล์ในระบบ และวางไว้ที่ไหน
 
-## 2) ติดตั้ง Apps Script (ครั้งเดียว)
-1. ไปที่ <https://script.google.com> → **New project** → ตั้งชื่อ `PSD 3D-eNGINNo Backend`
-2. ลบโค้ดเดิม → วางทั้งไฟล์ `apps-script/Code.gs`
-3. เลือกฟังก์ชัน **`setup`** → **Run** → อนุญาตสิทธิ์ (Drive, Sheets, Mail)
-4. ดู **Execution log** → จด **API KEY** และ **รหัสผ่าน admin**
-   - ระบบจะสร้างโฟลเดอร์ `PSD 3D-eNGINNo IFM SMART BUILDING` ใน Google Drive พร้อม Spreadsheet **Registry**
-5. **Deploy → New deployment → Web app**
-   - Execute as: **Me** · Who has access: **Anyone** → Deploy → คัดลอก URL ที่ลงท้าย `/exec`
+| ไฟล์ | วางที่ | หน้าที่ |
+|---|---|---|
+| `index.html` | **GitHub** | หน้า 3D (หน้าแรกของเว็บ) |
+| `admin.html` | **GitHub** | หลังบ้าน IFM ทุกโมดูล |
+| `mobile.html` | **GitHub** | แอปมือถือ |
+| `README.md` | **GitHub** | คู่มือนี้ |
+| `apps-script/Code.gs` | **Google Apps Script** (เก็บสำเนาใน GitHub ได้) | Backend: รับคำสั่งจากเว็บ → อ่าน/เขียน Google Sheets, ระบบผู้ใช้และสิทธิ์ |
+| `apps-script/appsscript.json` | Apps Script (ไม่บังคับ) | Manifest |
 
-> แก้โค้ดภายหลัง: Deploy → Manage deployments → ✏ Edit → Version: **New version** (URL เดิมใช้ต่อได้)
+> **หน้าร้าน = GitHub** (หน้าเว็บ) · **หลังร้าน = Apps Script** (ไม่มีหน้าจอ ทำงานเบื้องหลัง) · **โกดัง = Google Sheets** (เก็บข้อมูล)
+> ไฟล์ `.html` **ไม่ต้อง** เอาไปวางใน Apps Script และ `Code.gs` **ไม่ต้อง** อยู่บน GitHub เพื่อให้เว็บทำงาน
 
-## 3) เชื่อมเว็บกับฐานข้อมูล
-1. เปิด `https://<user>.github.io/<repo>/admin.html?srv=<URL /exec>` (ระบบจำ URL ให้เอง)
-2. เข้าสู่ระบบ `admin` + รหัสจาก Execution log → เปลี่ยนรหัสผ่านที่เมนูบัญชี
-3. **Settings → ☁ ฐานข้อมูล Google Sheets** → ใส่ **รหัสอาคาร** เช่น `HTL-01` → กด **“สร้าง / เชื่อม Spreadsheet อาคารนี้”**
-4. ที่ **Settings → โหมดข้อมูล** เลือก **✅ ข้อมูลจริง** → กด **เริ่มอาคารจริง** (ล้างข้อมูลตัวอย่าง) แล้วกรอก **พื้นที่ (Areas)**, ทรัพย์สิน, งาน HK ฯลฯ
-5. เปิด **Building Critical Status → 🏗 ตั้งค่าอาคาร / ✏ แก้ไขผังห้อง** เพื่อกำหนดชั้นและตำแหน่งห้อง → หน้า 3D ใช้ผังเดียวกันนี้
-6. เปิด `index.html` → ปุ่ม **🔗 ข้อมูลจริง IFM** จะแสดงอาคารจากข้อมูลจริง และดึงจาก Google Sheets อัตโนมัติทุก ~30 วินาที
-7. เพิ่มผู้ใช้ที่ **ผู้ใช้งาน & สิทธิ์** แล้วส่งลิงก์ `…/mobile.html?srv=<URL>` ให้ทีมงาน
+ทั้ง 3 หน้าใช้ **บัญชีผู้ใช้ การตั้งค่า และข้อมูลชุดเดียวกัน** เพราะอยู่บนเว็บเดียวกัน
 
-## ฐานข้อมูล Google Sheets
+---
+
+## 🚀 ติดตั้งครั้งแรก (ผู้ดูแลระบบ)
+
+### ขั้นที่ 1 — GitHub Pages
+1. อัปโหลดไฟล์ทั้งหมดไปที่ root ของ repo
+2. **Settings → Pages** → Source: *Deploy from a branch* → Branch `main` / `(root)` → **Save**
+3. รอ 1–2 นาที แล้วเปิดเว็บไซต์ได้
+
+**เปลี่ยนชื่อ repo / ลิงก์เว็บ:** Settings → General → *Repository name* → Rename
+(ลิงก์เว็บจะเปลี่ยนตามชื่อ repo · ลิงก์เดิมจะใช้ไม่ได้ · ข้อมูลในเบราว์เซอร์ไม่หาย)
+
+### ขั้นที่ 2 — Apps Script + ฐานข้อมูล
+1. สร้าง Google Sheet ว่าง 1 ไฟล์ → **ส่วนขยาย → Apps Script** (Sheet นี้เป็นแค่ "บ้าน" ของโค้ด — **ห้ามลบ**)
+2. ลบโค้ดเดิม → วางทั้งไฟล์ `Code.gs` → บันทึก
+3. เลือกฟังก์ชัน **`setup`** → **เรียกใช้ (Run)** → อนุญาตสิทธิ์
+4. ดู **บันทึกการดำเนินการ (Execution log)** แล้ว **จดเก็บไว้ในที่ปลอดภัย:**
+   - `Registry` — Spreadsheet ฐานข้อมูลกลาง (Users · Sites · Log)
+   - `Drive folder` — โฟลเดอร์หลักของระบบ
+   - `API KEY` และ `admin password`
+
+### ขั้นที่ 3 — Deploy เป็น Web app
+1. ปุ่ม **Deploy → New deployment** → ⚙ *Select type* → **Web app**
+2. Execute as: **Me** · Who has access: **Anyone** → **Deploy**
+3. กด **Copy** ที่ *Web app URL* (ต้องขึ้นต้น `https://script.google.com/macros/s/` และ **ลงท้าย `/exec`**)
+
+> แก้โค้ดภายหลัง: Deploy → **Manage deployments** → ✏ Edit → Version: **New version** → Deploy (URL เดิมใช้ต่อได้)
+
+### ขั้นที่ 4 — เชื่อมเว็บกับฐานข้อมูล + สร้างอาคาร
+1. เปิดลิงก์ (แทน `<URL>` ด้วย Web app URL):
+   ```
+   https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/admin.html?srv=<URL>
+   ```
+2. ด้านล่างกล่องล็อกอินต้องขึ้น **☁ Google Sheets** (ถ้าขึ้น 🧪 โหมดสาธิต → กด ⚙ เซิร์ฟเวอร์ → วาง URL → บันทึก + ทดสอบ)
+3. ล็อกอิน `admin` + รหัสจาก log → เปลี่ยนรหัสผ่านทันที
+4. เลือกธุรกิจที่แถบบน (เช่น 🏭 โรงงาน) → ไปหน้า **Settings**
+5. **โหมดข้อมูล** → เลือก **✅ ข้อมูลจริง**
+6. กล่อง **☁ ฐานข้อมูล Google Sheets** → ใส่ **รหัสอาคาร** เช่น `FAC-2026-001-FORD` (A–Z, 0–9, `-`) → ☑ ซิงค์อัตโนมัติ → กด **สร้าง / เชื่อม Spreadsheet อาคารนี้**
+7. กด **เริ่มอาคารจริง** เพื่อล้างข้อมูลตัวอย่าง แล้วกรอก **พื้นที่ (Areas)**, ทรัพย์สิน, งานแม่บ้าน ฯลฯ
+8. **Building Critical Status → 🏗 ตั้งค่าอาคาร / ✏ แก้ไขผังห้อง** เพื่อกำหนดชั้นและตำแหน่งห้อง (หน้า 3D ใช้ผังเดียวกัน)
+
+---
+
+## 👥 เพิ่มผู้ใช้ และส่งลิงก์ให้ทีมงาน
+
+**มีบัญชีได้ 2 วิธี**
+1. **Admin / FM สร้างให้:** หลังบ้าน → **ผู้ใช้งาน & สิทธิ์** → เพิ่มผู้ใช้ (Username, รหัสผ่าน, อีเมล, บทบาท, อาคารที่เข้าได้)
+2. **สมัครเอง:** หน้าล็อกอิน → **📝 ลงทะเบียน** → Admin / FM กดอนุมัติ
+
+**ลิงก์สำหรับเปิดครั้งแรก** (มี `?srv=` เพื่อให้เครื่องจำฐานข้อมูล — ครั้งต่อไปใช้ลิงก์สั้นได้)
+
+| ผู้ใช้ | ลิงก์ |
+|---|---|
+| ผู้บริหาร / ดูภาพรวม 3D | `https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/?srv=<URL>` |
+| FM / หัวหน้างาน (คอมพิวเตอร์) | `https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/admin.html?srv=<URL>` |
+| ช่าง / แม่บ้าน / ผู้แจ้งงาน (มือถือ) | `https://ienginnotech-tech.github.io/iENGINNo-3D-IFM/mobile.html?srv=<URL>` |
+
+**การเข้าสู่ระบบ**
+- ล็อกอินได้ทั้ง 3 หน้า — **หน้า 3D มีปุ่ม 🔐 เข้าสู่ระบบ** มุมขวาบน (เครื่องที่ยังไม่ล็อกอินจะเด้งกล่องให้อัตโนมัติ)
+- ล็อกอินหน้าใดหน้าหนึ่ง → อีก 2 หน้าใช้ได้ทันทีในเบราว์เซอร์เดียวกัน
+- ล็อกอิน 1 ครั้งใช้ได้ **7 วัน**
+- กดชื่อผู้ใช้ (👤) บนหน้า 3D → ดูบทบาท / อาคารที่เข้าได้ / **ออกจากระบบ**
+
+**บทบาท (บังคับสิทธิ์ที่ Server)**
+
+| บทบาท | ทำอะไรได้ |
+|---|---|
+| `admin` | ทุกธุรกิจ ทุกอาคาร · จัดการผู้ใช้ · สร้าง/ลบอาคาร · ตั้งค่าทั้งหมด |
+| `fm` | อาคารที่ได้รับสิทธิ์ · แก้ไขทั้งหมด · ตั้งค่า Module/KPI · อนุมัติผู้ใช้ระดับล่าง |
+| `sup` | Module ที่ได้รับสิทธิ์ · เพิ่ม / แก้ไข / ลบ |
+| `tech` | Module ที่ได้รับสิทธิ์ · เพิ่ม / แก้ไข / บันทึกงาน (ลบไม่ได้) |
+| `client` | ดูทุกหน้า + แจ้งงาน |
+| `requester` | แจ้งงาน + ติดตามสถานะ |
+
+---
+
+## 🧊 การใช้งานหน้า 3D
+
+**แหล่งข้อมูล** (ปุ่มมุมขวาบน)
+- **🔗 ข้อมูลจริง IFM** — อาคารจากข้อมูลจริง ดึงจาก Google Sheets อัตโนมัติทุก ~30 วินาที
+- **🧪 Demo 3D** — ข้อมูลจำลอง 7 ประเภทอาคาร (รวม Education) สำหรับนำเสนอ
+
+**ดูมุมมอง**
+- **ภาพรวมทั้งอาคาร** = ทุกชั้นซ้อนกัน · กดชื่อชั้นเพื่อดูทีละชั้น
+- **ซูม 10 ระดับ:** ปุ่ม ＋ / － · แถบเลื่อน · ปุ่มลัด *ทั้งตึก / ชั้น / โซน / ห้อง / ใกล้ชิด*
+- **ล้อเมาส์** = ซูมตรงจุดที่ชี้ · **ดับเบิลคลิก** = ซูมเข้าจุดนั้น · **คีย์บอร์ด** `+` `−` `0`
+- ลากซ้าย = หมุน · ลากขวา = เลื่อน · มือถือใช้ 2 นิ้วถ่าง/หุบ
+- **ชี้เมาส์** = ดูสถานะ · **คลิก** = เปิดรายละเอียดด้านขวา
+
+**สั่งงานจากโมเดล** (บันทึกลง Google Sheets ทันที)
+- ห้อง: **+ แจ้งซ่อม** (เลือก Service) · **🧹 ส่งแม่บ้าน** · **👥 เริ่ม / เลิกประชุม**
+- งานซ่อม: **รับงาน** → In Progress · **ปิดงาน** → Completed
+- เครื่องจักร: **⚠ แจ้งชำรุด (Down)** → เปิดงานซ่อมอัตโนมัติ · **✔ ซ่อมเสร็จ** · Start / Standby
+
+**สัญลักษณ์**
+| เห็นอะไร | หมายถึง |
+|---|---|
+| ใบพัดหมุน + ไฟเขียว | เครื่อง Running |
+| ไฟเหลืองกะพริบ | Warning |
+| เครื่องหยุด + วงแดง ⚠ | Down / ชำรุด |
+| 🔧 | มีงานแจ้งซ่อมค้าง |
+| ช่างหมวกเหลืองยืนซ่อม | งานซ่อม In Progress |
+| แม่บ้านถูพื้น + ป้ายเหลือง | งานแม่บ้านกะนี้ / ใบงานทำความสะอาด |
+| 🧹 Missed · 🛡 · 🐜 · 🏗 | แม่บ้านพลาด · เหตุ รปภ. · พบสัตว์พาหะ · Defect |
+| 👥 / ว่าง | ห้องประชุมมีคนใช้ / ว่าง |
+| ขอบห้องแดง / เหลือง | วิกฤต / มีงานค้าง |
+
+---
+
+## 🗄 โครงสร้างฐานข้อมูล Google Sheets
+
 ```
 Google Drive / PSD 3D-eNGINNo IFM SMART BUILDING /
-├─ PSD 3D-eNGINNo · Registry      ← Users · Sites · Log (ฐานกลางของทุกระบบ)
-└─ <business> / <SITE> /
-   ├─ IFM · <business> · <SITE>   ← 1 ชีตต่อ 1 ตาราง
+├─ PSD 3D-eNGINNo · Registry      ← ฐานกลาง: Users · Sites · Log
+└─ <ธุรกิจ> / <รหัสอาคาร> /         เช่น factory / FAC-2026-001-FORD /
+   ├─ IFM · <ธุรกิจ> · <รหัสอาคาร>  ← 1 ชีตต่อ 1 ตาราง
    │    tickets, assets, pm, areas, hkTasks, hkInsp, patrols, secInc, visitors,
-   │    pestSt, pestVisit, gdnZones, gdnTasks, linenItems, linenTx, omEquip, omTest,
-   │    omLog, meters, defects, compliance, staff, vendors, maContract, kpiCustom,
-   │    bookings (ห้องประชุมจากหน้า 3D) · _config (ตั้งค่าอาคาร/ผังชั้น) · _meta
-   ├─ media/   ← รูปถ่าย/ลายเซ็นที่อัปโหลด (แปลงจาก base64 เป็นไฟล์ Drive อัตโนมัติ)
+   │    pestSt, pestVisit, gdnZones, gdnTasks, linenItems, linenTx, omEquip,
+   │    omTest, omLog, meters, defects, compliance, staff, vendors, maContract,
+   │    kpiCustom, bookings · _config (ตั้งค่าอาคาร/ผังชั้น) · _meta
+   ├─ media/   ← รูปถ่าย / ลายเซ็น (แปลงเป็นไฟล์ Drive อัตโนมัติ)
    └─ data/    ← ข้อมูลที่ยาวเกิน 1 เซลล์
 ```
 
-## หน้า 3D อ่านข้อมูลอะไร
-| ตาราง | แสดงผลใน 3D |
+**หน้า 3D อ่านตารางไหน**
+
+| ตาราง | แสดงใน 3D |
 |---|---|
-| `areas` + `_config.bldg` | ห้อง 1 ห้องต่อ 1 พื้นที่ · ชนิดห้องเดาจากชื่อ (Chiller, ICU, OR, Kitchen, Lobby, Office, Meeting, Warehouse, Production Line, Car Park …) |
-| `assets` | ผูกกับเครื่องจักร 3D · Running = หมุน/ไฟเขียว · Warning = ไฟเหลือง · Down = หยุด + วงแดง ⚠ |
-| `tickets` | ป้าย 🔧 · In Progress/Assigned → ช่าง, แม่บ้าน, รปภ. หรือทีม Pest เดินเข้าไปทำงานตาม Service |
-| `hkTasks` | งานกะปัจจุบัน → แม่บ้านถูพื้น + ป้ายพื้นเปียก · Missed → ป้ายเตือน |
-| `secInc` / `pestSt` / `defects` | ป้าย 🛡 🐜 🏗 และสถานะวิกฤตของห้อง |
-| `bookings` | ห้องประชุม: มีคนประชุม / ว่าง |
+| `areas` + `_config.bldg` | ห้อง 1 ห้องต่อ 1 พื้นที่ · ชนิดห้องเดาจากชื่อ (Chiller, ICU, OR, Kitchen, Lobby, Office, Meeting, Warehouse, Line, Car Park …) · ตำแหน่งตามผังใน Building Critical Status |
+| `assets` | ผูกกับเครื่องจักร 3D ตามชนิด (Chiller, Pump, AHU, Generator, Panel, Lift, Boiler …) |
+| `tickets` | ป้าย 🔧 · คนทำงานตาม Service: eng/fac = ช่าง · hk/lin = แม่บ้าน · sec = รปภ. · pest/gdn = ทีม Pest/สวน |
+| `hkTasks` | Scheduled ในกะปัจจุบัน → แม่บ้านถูพื้น · Missed → ป้ายเตือน |
+| `secInc` · `pestSt` · `defects` | ป้าย 🛡 🐜 🏗 และระดับวิกฤตของห้อง |
+| `bookings` | สถานะห้องประชุม |
 
-ปุ่ม **🧪 Demo 3D** ใช้ข้อมูลจำลอง 7 ประเภทอาคาร (รวม Education) สำหรับนำเสนอ
+> ⚠ ไม่ควรแก้ชื่อหัวคอลัมน์ใน Sheet ด้วยมือ — แก้ข้อมูลผ่านหน้าเว็บจะปลอดภัยที่สุด
 
-## บทบาทผู้ใช้ (บังคับที่ Server)
-`admin` ทุกอย่าง · `fm` อาคารที่ได้รับสิทธิ์ + ตั้งค่า + จัดการผู้ใช้ระดับล่าง · `sup` / `tech` แก้ไขเฉพาะ Module ที่ได้รับสิทธิ์ · `client` / `requester` แจ้งงานและดูสถานะ
+---
+
+## 🛠 แก้ปัญหาที่พบบ่อย
+
+| อาการ | วิธีแก้ |
+|---|---|
+| หน้าล็อกอินขึ้น 🧪 โหมดสาธิต | เปิดลิงก์ที่มี `?srv=<URL>` อีกครั้ง หรือกด ⚙ เซิร์ฟเวอร์ แล้ววาง URL |
+| "Web App ตอบกลับไม่ใช่ JSON" | ตรวจว่า Deploy เป็น *Web app* · Who has access = **Anyone** · URL ลงท้าย `/exec` |
+| "Unknown action" / "Apps Script เป็นเวอร์ชันเก่า" | วาง `Code.gs` ล่าสุด → Deploy → Manage deployments → Edit → **New version** |
+| "ยังไม่มี Spreadsheet ของอาคาร…" | Admin / FM ไป Settings → ใส่รหัสอาคาร → กด *สร้าง / เชื่อม Spreadsheet อาคารนี้* |
+| "ไม่มีสิทธิ์เข้าถึงอาคาร" | Admin เพิ่มอาคารให้ผู้ใช้ที่ ผู้ใช้งาน & สิทธิ์ |
+| หน้า 3D ว่าง "ยังไม่มีข้อมูลพื้นที่" | ล็อกอิน (🔐) · ตรวจว่าเลือกธุรกิจถูก · เพิ่ม *พื้นที่ (Areas)* ในหลังบ้าน |
+| "เซสชันหมดอายุ" | ล็อกอินใหม่ (ครบ 7 วัน) |
+| ลืมรหัส admin | ใช้ "ลืมรหัสผ่าน" (รับรหัสทางอีเมล) · หรือเปิด Registry → ชีต Users → แถว `admin` แก้ช่อง status เป็น `disabled` → กลับไป Apps Script รัน `setup` → รหัส admin ใหม่จะแสดงใน log |
+| เว็บยังเป็นเวอร์ชันเก่าหลังอัปโหลด | รอ 1–2 นาที แล้วกด `Ctrl + F5` |
+
+**ฟังก์ชันใน Apps Script ที่รันเองได้:** `setup` (ติดตั้ง/ตรวจระบบ) · `listSites` (แสดงลิงก์ทุกอาคารใน log) · `rotateApiKey` (เปลี่ยน API Key)
+
+---
+
+## 📝 ประวัติเวอร์ชัน
+
+| วันที่ | เวอร์ชัน | รายการ |
+|---|---|---|
+| 2026-11-08 | v1.0 | รวม 3D + IFM Management + IFM Mobile เป็นระบบเดียว · Backend `Code.gs` v3D-1.0 · ฐานข้อมูล Google Sheets |
+| 2026-11-08 | v1.1 | โลโก้ 3D-iFM · ซูม 10 ระดับ + ดับเบิลคลิก · ปุ่ม 🔐 เข้าสู่ระบบบนหน้า 3D · รองรับ `?srv=` บนหน้า 3D |
 
 ---
 PSD 3D-eNGINNo · IFM SMART BUILDING · 2026

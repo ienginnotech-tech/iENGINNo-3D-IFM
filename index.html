@@ -118,6 +118,13 @@ aside{border-left:1px solid var(--bd);background:var(--pn);overflow:auto;min-hei
 #empty h3{margin:0 0 6px}#empty p{color:var(--mu);margin:0 0 14px}
 .chip.src{border-color:var(--ac);color:#fdba74}.chip.src.demo{border-color:#64748b;color:#cbd5e1}
 a.chip{text-decoration:none;color:var(--tx)}
+.chip.login{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+.chip.user{border-color:#3b5280}
+.lgf{display:grid;gap:10px;max-width:380px;margin:6px auto 0}
+.lgf label{display:grid;gap:4px;font-size:12px;color:var(--mu)}
+.lgf input{background:#0a1324;border:1px solid var(--bd);border-radius:8px;padding:9px 10px;font-size:14px;color:var(--tx)}
+.lgmsg{background:#3b0d0d;border:1px solid #7f1d1d;color:#fecaca;border-radius:8px;padding:8px 10px;font-size:12.5px}
+.lgok{background:#052e16;border:1px solid #166534;color:#bbf7d0;border-radius:8px;padding:8px 10px;font-size:12.5px}
 #srcInfo{color:var(--mu);font-size:11.5px;margin-left:auto;white-space:nowrap}
 #srcInfo b{color:var(--tx)}
 @media (max-width:900px){
@@ -139,6 +146,7 @@ a.chip{text-decoration:none;color:var(--tx)}
     <div class="sp"></div>
     <span class="chip src" id="srcBtn" title="สลับแหล่งข้อมูล: ข้อมูล IFM จริง / Demo 3D"></span>
     <span class="chip on" id="simBtn" title="จำลองเหตุการณ์อัตโนมัติ (แจ้งซ่อม/แม่บ้าน/ประชุม)">● Live Simulation</span>
+    <span class="chip" id="userBtn"></span>
     <a class="chip" href="admin.html" title="ระบบหลังบ้าน IFM (Back Office)">🖥 หลังบ้าน</a>
     <a class="chip" href="mobile.html" title="IFM Mobile">📱 Mobile</a>
     <span class="chip" id="dataBtn">{ } Data model</span>
@@ -152,7 +160,7 @@ a.chip{text-decoration:none;color:var(--tx)}
   <main>
     <div id="stage">
       <div id="loading">กำลังโหลดโมเดล 3D…</div>
-      <div id="empty"><div class="box"><h3 id="emptyT"></h3><p id="emptyP"></p><div class="btns" style="justify-content:center"><a class="btn pr" href="admin.html" style="text-decoration:none">🖥 เปิดหลังบ้าน IFM</a><button class="btn" id="emptyDemo">🧪 ใช้ Demo 3D</button></div></div></div>
+      <div id="empty"><div class="box"><h3 id="emptyT"></h3><p id="emptyP"></p><div class="btns" style="justify-content:center"><button class="btn pr" id="emptyLogin">🔐 เข้าสู่ระบบ</button><a class="btn" href="admin.html" style="text-decoration:none">🖥 เปิดหลังบ้าน IFM</a><button class="btn" id="emptyDemo">🧪 ใช้ Demo 3D</button></div></div></div>
       <div class="overlay ov-tr">
         <button class="ib" id="vReset" title="มุมมองเริ่มต้น">⌂</button>
         <button class="ib" id="vTop" title="มุมบน (Plan)">▦</button>
@@ -327,7 +335,7 @@ async function ifmPull(force){if(!ifmOnline()||IFM.busy)return false;if(!force&&
   try{let j;try{j=await gasCall('view3d')}catch(e){if(/Unknown action/.test(e.message))j=await gasCall('pull');else throw e}
     IFM.lastPull=Date.now();IFM.err='';if(j.empty)return false;
     IFM.remote=Object.assign({},ifmLocal()||{},j.config||{},j.tables||{});return true}
-  catch(e){IFM.err=e.message;return false}finally{IFM.busy=false}}
+  catch(e){IFM.err=e.message;if(e.auth){try{localStorage.removeItem('psd_ifm_session');localStorage.removeItem('psd_ifm_m_user')}catch(x){}IFM.err='เซสชันหมดอายุ — กรุณาเข้าสู่ระบบใหม่';setTimeout(()=>{renderUser();renderEmpty()},0)}return false}finally{IFM.busy=false}}
 /* ---- floors & rooms from IFM areas (same layout rule as Building Critical Status 2D) ---- */
 const tokens=s=>String(s||'').toUpperCase().split(/[-–,\/]/).map(x=>x.trim()).filter(Boolean);
 function fName(c){c=String(c);if(/^roof$/i.test(c))return'Roof';if(/^g$/i.test(c))return'Ground (G)';if(/^B\d+$/i.test(c))return'ชั้น '+c.toUpperCase();if(/^\d+$/.test(c))return'ชั้น '+c;return c}
@@ -824,7 +832,8 @@ function build(){
   if(!ov && !fl.some(f=>f.id===VIEW)) VIEW = fl.length>1 ? 'ALL' : fl[0].id;
   const show = VIEW==='ALL' ? fl : fl.filter(f=>f.id===VIEW);
   show.forEach((f,i)=>buildFloor(f, VIEW==='ALL' ? (show.length-1-i)*14 : 0, VIEW==='ALL'));
-  const P0=(show[0].plate||{w:46,d:32,cx:0,cz:0}); RT.view={cx:P0.cx,cz:P0.cz,size:Math.max(P0.w,P0.d),h:(show.length-1)*14};
+  let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9; show.forEach(f=>{ const P=f.plate||{w:46,d:32,cx:0,cz:0}; x0=Math.min(x0,P.cx-P.w/2); x1=Math.max(x1,P.cx+P.w/2); z0=Math.min(z0,P.cz-P.d/2); z1=Math.max(z1,P.cz+P.d/2); });
+  RT.view={cx:(x0+x1)/2,cz:(z0+z1)/2,size:Math.max(x1-x0,z1-z0),h:(show.length-1)*14};
   sync(); camPreset(); applyLabels();
 }
 
@@ -1120,10 +1129,11 @@ function loop(){
 camera.position.set(30,60,70);
 function renderSrc(){ const b=$('srcBtn'); b.className='chip src'+(MODE==='demo'?' demo':''); b.textContent = MODE==='ifm' ? '🔗 ข้อมูลจริง IFM' : '🧪 Demo 3D';
   $('simBtn').textContent = MODE==='ifm' ? (SIM?'● Auto-refresh':'○ Refresh หยุด') : (SIM?'● Live Simulation':'○ Simulation หยุด');
-  const u=ifmUser(); $('srcInfo').innerHTML = MODE==='ifm' ? `${ifmSite()?'🏢 <b>'+ifmSite()+'</b> · ':''}${ifmMode()==='sample'?'🧪 ข้อมูลตัวอย่าง IFM':'✅ ข้อมูลจริง'} · ${ifmOnline()?(IFM.err?'❌ '+IFM.err:'☁ Sheets'+(IFM.lastPull?' '+new Date(IFM.lastPull).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}):'')):'💾 ในเครื่อง'}${u?' · 👤 '+(u.name||u.username):''}` : 'ข้อมูลจำลองสำหรับนำเสนอ'; }
+  const u=ifmUser(); $('srcInfo').innerHTML = MODE==='ifm' ? `${ifmSite()?'🏢 <b>'+ifmSite()+'</b> · ':''}${ifmMode()==='sample'?'🧪 ข้อมูลตัวอย่าง IFM':'✅ ข้อมูลจริง'} · ${ifmOnline()?(IFM.err?'❌ '+IFM.err:'☁ Sheets'+(IFM.lastPull?' '+new Date(IFM.lastPull).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}):'')):'💾 ในเครื่อง'}${u?'':(ifmCfg().url?' · 🔐 ยังไม่ได้เข้าสู่ระบบ':'')}` : 'ข้อมูลจำลองสำหรับนำเสนอ'; }
 function renderEmpty(){ const e=$('empty'), none = MODE==='ifm' && !IFM.floors.length; e.style.display = none ? 'grid' : 'none'; if(!none) return;
   $('emptyT').textContent = `ยังไม่มีข้อมูลพื้นที่ของ ${B[BKEY].th}`;
-  $('emptyP').textContent = ifmOnline() ? (IFM.err ? 'ดึงข้อมูลจาก Google Sheets ไม่สำเร็จ: '+IFM.err : 'กำลังดึงข้อมูลจาก Google Sheets…') : 'เปิดหลังบ้าน IFM ในเบราว์เซอร์นี้ เลือกธุรกิจนี้ แล้วเพิ่ม "พื้นที่ (Areas)" — ภาพ 3D จะสร้างจากพื้นที่เหล่านั้นอัตโนมัติ'; }
+  $('emptyLogin').style.display = ifmUser() ? 'none' : '';
+  $('emptyP').textContent = (ifmCfg().url && !ifmUser()) ? 'ฐานข้อมูล Google Sheets เชื่อมไว้แล้ว — กรุณาเข้าสู่ระบบเพื่อโหลดข้อมูลอาคาร' : ifmOnline() ? (IFM.err ? 'ดึงข้อมูลจาก Google Sheets ไม่สำเร็จ: '+IFM.err : 'กำลังดึงข้อมูลจาก Google Sheets…') : 'เปิดหลังบ้าน IFM ในเบราว์เซอร์นี้ เลือกธุรกิจนี้ แล้วเพิ่ม "พื้นที่ (Areas)" — ภาพ 3D จะสร้างจากพื้นที่เหล่านั้นอัตโนมัติ'; }
 function setMode(m){ MODE=m; LSs('psd_3d_src',m); SEL=null; FORM=false; if(m==='ifm'&&!BIZ_IFM[BKEY]) BKEY='hotel';
   renderBuildings(); renderSrc(); if(m==='ifm'){ IFM.lh=''; IFM.remote=null; VIEW='ALL'; ifmRefresh(false); ifmPull(true).then(ok=>{ if(ok) ifmRefresh(false); renderSrc(); }); } else { VIEW='G'; build(); } }
 $('srcBtn').onclick=()=>setMode(MODE==='ifm'?'demo':'ifm');
@@ -1141,13 +1151,64 @@ function ifmAct(act,a,rid){ const s=S();
     const c=s.cleaning[rid]; if(c&&c.hkId){ const h=findRow('hkTasks',c.hkId); if(h) ifmCommit('hkTasks',[Object.assign({},h,{status:'Done',lastDone:todayS()})]); } }
   if(act==='meeton'||act==='meetoff'){ const d=roomDef(rid); ifmCommit('bookings',[{id:'BK-'+rid,room:rid,roomName:d.name,n:act==='meeton'?6:0,status:act==='meeton'?'active':'ended',start:isoDT(),by:meName()}]); log(act==='meeton'?`👥 ${d.name} เริ่มประชุม`:`🚪 ${d.name} เลิกประชุม`); }
 }
-(function boot(){ const q=new URLSearchParams(location.search), qb=q.get('b');
+/* ---------- เข้าสู่ระบบ (บัญชีเดียวกับหลังบ้าน / Mobile) ---------- */
+function renderUser(){ const b=$('userBtn'), u=ifmUser();
+  if(u){ b.className='chip user'; b.textContent='👤 '+(u.name||u.username); b.title='บัญชีของฉัน · '+(u.role||''); }
+  else { b.className='chip login'; b.textContent='🔐 เข้าสู่ระบบ'; b.title='เข้าสู่ระบบด้วยบัญชี IFM'; } }
+const RL_TH={admin:'ผู้ดูแลระบบ (Admin)',fm:'ผู้จัดการอาคาร (FM)',sup:'หัวหน้างาน',tech:'ช่าง / พนักงานบริการ',client:'เจ้าของอาคาร / ลูกค้า',requester:'ผู้แจ้งงาน'};
+const escH=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function openModal(html){ $('mbox').innerHTML=html; $('modal').style.display='grid'; }
+function closeModal(){ $('modal').style.display='none'; }
+function showLogin(msg,ok){ const c=ifmCfg();
+  if(!c.url){ openModal(`<div class="btns" style="justify-content:space-between"><h2 style="margin:0">🔐 เข้าสู่ระบบ</h2><button class="btn sm" id="mx">✕</button></div>
+    <p style="color:var(--mu)">เครื่องนี้ยังไม่ได้เชื่อมฐานข้อมูล Google Sheets — วาง <b>Web App URL</b> (ลงท้าย /exec) ที่ได้จากผู้ดูแลระบบ</p>
+    <form class="lgf" id="srvf">${msg?`<div class="lgmsg">${escH(msg)}</div>`:''}<label>Web App URL<input name="url" placeholder="https://script.google.com/macros/s/…/exec" required></label>
+    <button class="btn pr" style="padding:9px">เชื่อมต่อ</button>
+    <a href="admin.html?return=index.html" style="color:#93c5fd;font-size:12px;text-align:center">หรือใช้โหมดสาธิต (admin / ifm2026) ที่หลังบ้าน ›</a></form>`);
+    $('mx').onclick=closeModal;
+    $('srvf').onsubmit=async ev=>{ ev.preventDefault(); const url=new FormData(ev.target).get('url').trim();
+      try{ if(!/^https:\/\/script\.google\.com\/.+\/exec$/.test(url)) throw new Error('URL ต้องเป็น https://script.google.com/macros/s/…/exec');
+        const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'ping'})}); const j=await r.json(); if(!j.ok) throw new Error(j.error||'ping failed');
+        LSs('psd_ifm_gas',Object.assign(ifmCfg(),{url})); showLogin('','☁ เชื่อมต่อฐานข้อมูลแล้ว — เข้าสู่ระบบได้เลย'); }
+      catch(e){ showLogin(e.message); } };
+    return; }
+  openModal(`<div class="btns" style="justify-content:space-between"><h2 style="margin:0">🔐 เข้าสู่ระบบ</h2><button class="btn sm" id="mx">✕</button></div>
+    <p style="color:var(--mu);margin:4px 0 0">ใช้บัญชีเดียวกับหลังบ้านและ Mobile</p>
+    <form class="lgf" id="lgf">${msg?`<div class="lgmsg">${escH(msg)}</div>`:''}${ok?`<div class="lgok">${escH(ok)}</div>`:''}
+      <label>Username<input name="u" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+      <label>Password<input name="p" type="password" autocomplete="current-password" required></label>
+      <button class="btn pr" id="lgGo" style="padding:9px">เข้าสู่ระบบ</button>
+      <div style="display:flex;justify-content:space-between;font-size:12px"><a href="admin.html?return=index.html" style="color:#93c5fd">ลงทะเบียน / ลืมรหัสผ่าน ›</a>
+      <a href="#" id="chSrv" style="color:var(--mu)">☁ ${escH(c.url.replace(/^https:\/\/script\.google\.com\/macros\/s\//,'').slice(0,12))}… เปลี่ยน</a></div></form>`);
+  $('mx').onclick=closeModal; setTimeout(()=>{ const i=document.querySelector('#lgf input[name=u]'); i&&i.focus(); },50);
+  $('chSrv').onclick=e=>{ e.preventDefault(); LSs('psd_ifm_gas',Object.assign(ifmCfg(),{url:''})); try{localStorage.removeItem('psd_ifm_session')}catch(x){} showLogin(); };
+  $('lgf').onsubmit=async ev=>{ ev.preventDefault(); const f=new FormData(ev.target), btn=$('lgGo'); btn.disabled=true; btn.textContent='กำลังตรวจสอบ…';
+    try{ const j=await gasCall('login',{username:String(f.get('u')).trim(),password:f.get('p'),client:'3d'});
+      LSs('psd_ifm_session',{mode:'online',token:j.token||'',user:j.user,sites:j.sites||[],at:Date.now()});
+      LSs('psd_ifm_m_user',{name:j.user.name||j.user.username,role:j.user.role,username:j.user.username});
+      Object.values(BIZ_IFM).forEach(b=>{ const cur=LSg('psd_ifm_site_'+b,''), L=(j.sites||[]).filter(x=>x.business===b); if((!cur||(j.user.role!=='admin'&&!L.some(x=>x.site===cur)))&&L[0]) LSs('psd_ifm_site_'+b,L[0].site); });
+      const first=(j.sites||[])[0]; if(first && !ifmSite()){ const k3=Object.keys(BIZ_IFM).find(k=>BIZ_IFM[k]===first.business); if(k3) BKEY=k3; }
+      if(ifmMode()==='sample') LSs('psd_ifm_mode','live');
+      closeModal(); renderUser(); log('👤 ยินดีต้อนรับ '+(j.user.name||j.user.username)); setMode('ifm'); }
+    catch(e){ showLogin(e.message); } }; }
+function showAccount(){ const u=ifmUser(), s=ifmSess()||{}; const sites=(s.sites||[]).map(x=>`${escH(x.site)}${x.name?' · '+escH(x.name):''}`).join('<br>')||'—';
+  openModal(`<div class="btns" style="justify-content:space-between"><h2 style="margin:0">👤 ${escH(u.name||u.username)}</h2><button class="btn sm" id="mx">✕</button></div>
+    <div class="kv" style="margin:12px 0"><span>Username</span><span>${escH(u.username)}</span><span>บทบาท</span><span>${escH(RL_TH[u.role]||u.role)}</span><span>อีเมล</span><span>${escH(u.email||'—')}</span><span>อาคารที่เข้าถึงได้</span><span>${sites}</span><span>การเชื่อมต่อ</span><span>${s.mode==='online'?'☁ Google Sheets':'🧪 โหมดสาธิต'}</span></div>
+    <div class="btns"><a class="btn" href="admin.html#settings" style="text-decoration:none">⚙ เปลี่ยนรหัสผ่าน / ตั้งค่า</a><button class="btn dg" id="lgOut">⎋ ออกจากระบบ</button></div>`);
+  $('mx').onclick=closeModal;
+  $('lgOut').onclick=()=>{ try{localStorage.removeItem('psd_ifm_session');localStorage.removeItem('psd_ifm_m_user')}catch(e){} IFM.remote=null; IFM.err=''; closeModal(); renderUser(); log('⎋ ออกจากระบบแล้ว'); if(MODE==='ifm'){ IFM.lh=''; ifmRefresh(false); } renderSrc(); renderEmpty(); }; }
+$('userBtn').onclick=()=> ifmUser() ? showAccount() : showLogin();
+$('emptyLogin').onclick=()=>showLogin();
+(function boot(){ const q=new URLSearchParams(location.search), qb=q.get('b'), srv=q.get('srv')||q.get('server');
+  if(srv&&/^https:\/\/script\.google\.com\//.test(srv)&&srv!==ifmCfg().url){ LSs('psd_ifm_gas',Object.assign(ifmCfg(),{url:srv})); try{localStorage.removeItem('psd_ifm_session')}catch(e){} LSs('psd_3d_src','ifm'); }
+  if(srv){ try{ history.replaceState(null,'',location.pathname+location.hash); }catch(e){} }
   let ib=LSg('psd_ifm_biz',null); if(!ib){ try{ for(let i=0;i<localStorage.length;i++){ const m=String(localStorage.key(i)).match(/^psd_ifm_v1_([a-z]+)@/); if(m){ ib=m[1]; break; } } }catch(e){} }
   const ib3=Object.keys(BIZ_IFM).find(k=>BIZ_IFM[k]===ib);
   BKEY = B[qb]?qb : (LSg('psd_3d_biz',null) && B[LSg('psd_3d_biz',null)] ? LSg('psd_3d_biz',null) : (ib3||'hotel'));
   const pref=LSg('psd_3d_src',null); MODE = q.get('src')==='demo'?'demo' : q.get('src')==='ifm'?'ifm' : pref || (ifmAnyData()?'ifm':'demo');
   if(MODE==='ifm'&&!BIZ_IFM[BKEY]) BKEY=ib3||'hotel';
-  renderBuildings(); resize(); renderSrc();
+  renderBuildings(); resize(); renderSrc(); renderUser();
+  if(ifmCfg().url && !ifmUser()) setTimeout(()=>showLogin(),600);
   if(MODE==='ifm'){ VIEW='ALL'; ifmRefresh(false); if(!IFM.lh) build(); ifmPull(true).then(ok=>{ if(ok) ifmRefresh(false); renderSrc(); }); } else build();
   $('loading').remove(); loop(); })();
 </script>

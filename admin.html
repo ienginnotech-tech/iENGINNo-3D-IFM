@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script>try{var _r=new URLSearchParams(location.search).get("return");if(_r&&/^[\w.-]+\.html(#[\w-]*)?$/.test(_r))sessionStorage.setItem("psd_return",_r)}catch(e){}</script>
 <title>PSD 3D-eNGINNo IFM SMART BUILDING · Back Office</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -2775,7 +2776,7 @@ async function doReset(){const code=lgv('fg-code'),pw=document.getElementById('f
   try{const j=await authReset(FG.who,code,pw);FG.demo='';LG.tab='login';LG.msg='';LG.ok='✅ ตั้งรหัสผ่านใหม่แล้ว — เข้าสู่ระบบด้วยรหัสใหม่ได้เลย';lgRender();const u=document.getElementById('lg-user');if(u)u.value=j.username||FG.who;const p2=document.getElementById('lg-pass');p2&&p2.focus()}
   catch(e){LG.msg=e.message;LG.ok='';lgRender();const c=document.getElementById('fg-code');if(c)c.value=code}}
 async function doLogin(){const b=document.getElementById('lg-go');if(b){b.disabled=true;b.textContent='กำลังตรวจสอบ…'}
-  try{await authLogin(lgv('lg-user'),document.getElementById('lg-pass').value);LG.msg='';LG.ok='';document.getElementById('login').hidden=true;afterAuth();toast('ยินดีต้อนรับ '+(me().name||me().username)+' · '+roleTx(me().role))}
+  try{await authLogin(lgv('lg-user'),document.getElementById('lg-pass').value);LG.msg='';LG.ok='';document.getElementById('login').hidden=true;try{const _r=sessionStorage.getItem('psd_return');if(_r){sessionStorage.removeItem('psd_return');location.href=_r;return}}catch(e){}afterAuth();toast('ยินดีต้อนรับ '+(me().name||me().username)+' · '+roleTx(me().role))}
   catch(e){LG.msg=e.message;const u=lgv('lg-user');lgRender();const i=document.getElementById('lg-user');if(i){i.value=u;document.getElementById('lg-pass').focus()}}}
 async function doSignup(){const d={name:lgv('rg-name'),phone:lgv('rg-phone'),email:lgv('rg-email'),username:lgv('rg-user'),business:lgv('rg-biz'),site:lgv('rg-site'),role:lgv('rg-role'),note:lgv('rg-note')};const pw=document.getElementById('rg-pass').value;
   const b=document.getElementById('rg-go');if(b){b.disabled=true;b.textContent='กำลังส่ง…'}
