@@ -2879,5 +2879,6 @@ else setTimeout(()=>syncBoot(()=>{buildChrome();render()}),50);
 (function(){const h=(location.hash||'').slice(1);CUR=viewOk(h)?h:'dashboard';render()})();
 </script>
 <script>(function(){var first=true;PSDP.on(function(){try{applyTheme()}catch(e){}if(!first){try{buildChrome();renderUser();render()}catch(e){console.error(e)}}first=false})})();</script>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="index.html"]');if(!a||typeof BIZK==='undefined')return;var b=BIZK==='expo'?'exhibition':BIZK,f=(window.BCS&&BCS.sel)?'&f='+encodeURIComponent(BCS.sel):'';a.href='index.html?b='+b+(String(a.getAttribute('href')).indexOf('bcs')>=0||document.querySelector('.bcs-btn')?f:'')},true);</script>
 </body>
 </html>

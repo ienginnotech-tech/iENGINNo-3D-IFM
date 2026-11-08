@@ -2587,5 +2587,6 @@ GUARD('omLogOpen',id=>canEdit('omLog',id?rowOf('omLog',id):null));
 applyPrefs();authBoot();ST.user=stUser();load();render();if(ST.user)setTimeout(()=>syncBoot(()=>{if(!FM)render()}),50);
 </script>
 <script>(function(){var first=true;PSDP.on(function(c){try{applyPrefs()}catch(e){}var ch=false;if(PSDP.has('lang')&&ST.lang!==c.lang){ST.lang=c.lang;LS.set(MK.lang,c.lang);ch=true}if(!first||ch){try{render()}catch(e){console.error(e)}}first=false})})();</script>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="index.html"]');if(!a||typeof BIZK==='undefined')return;var b=BIZK==='expo'?'exhibition':BIZK,f=(window.BCS&&BCS.sel)?'&f='+encodeURIComponent(BCS.sel):'';a.href='index.html?b='+b+(String(a.getAttribute('href')).indexOf('bcs')>=0||document.querySelector('.bcs-btn')?f:'')},true);</script>
 </body>
 </html>

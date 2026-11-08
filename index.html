@@ -127,6 +127,25 @@ a.chip{text-decoration:none;color:var(--tx)}
 .lgok{background:#052e16;border:1px solid #166534;color:#bbf7d0;border-radius:8px;padding:8px 10px;font-size:12.5px}
 #srcInfo{color:var(--mu);font-size:11.5px;margin-left:auto;white-space:nowrap}
 #srcInfo b{color:var(--tx)}
+.ov-tl{top:10px;left:10px;flex-direction:column;width:250px;background:var(--ovl);border:1px solid var(--bd);border-radius:12px;padding:8px 10px 6px;color:var(--tx)}
+.bnh{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--mu);margin-bottom:2px}
+.bnl{display:flex;gap:10px;font-size:10.5px;color:var(--mu);justify-content:center}.bnl i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px}
+#bnav .nf:hover rect,#bnav .nf:hover polygon{stroke:#f97316;stroke-width:2}
+.wr3{border:1px solid var(--bd);border-radius:8px;padding:6px 8px;margin:6px 0;background:var(--pn2)}
+.wr3[data-go]{cursor:pointer}.wr3[data-go]:hover{border-color:var(--mu)}
+.wr3h{display:flex;align-items:center;gap:6px;font-size:12px}.wr3h .d{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wr3f{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:4px}.wr3f small{color:var(--mu);font-size:11px}
+.tag{font-family:ui-monospace,monospace;font-size:10.5px;border:1px solid var(--bd);border-radius:5px;padding:1px 5px;color:var(--mu);white-space:nowrap}
+.ac3{border:1.5px solid var(--bd);border-radius:10px;padding:8px;margin-bottom:10px}
+.ac3.crit{border-color:#ef4444}.ac3.warn{border-color:#f59e0b}
+.ac3h{display:flex;align-items:center;gap:8px;cursor:pointer;flex-wrap:wrap}.ac3h b{font-size:13px}.ac3h .sum{margin-left:auto;font-size:11px;color:#f87171;font-weight:600}
+.ac3.warn .ac3h .sum{color:#fbbf24}
+.svc3w{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.svc3{border:1.5px solid var(--c,var(--bd));background:transparent;color:var(--tx);border-radius:999px;padding:3px 9px;font-size:11.5px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.svc3 i{width:8px;height:8px;border-radius:50%;background:var(--c,#64748b)}.svc3 b{color:var(--c)}.svc3.on{background:color-mix(in srgb,var(--c) 22%,transparent)}
+.form textarea{background:var(--in);border:1px solid var(--bd);border-radius:7px;padding:6px 8px;min-height:60px;color:var(--tx);font:inherit}
+.form label{display:grid;gap:3px;font-size:11.5px;color:var(--mu)}
+@media (max-width:900px){.ov-tl{display:none}}
 html[data-theme=gray] .chip.src{color:#c2410c}html[data-theme=gray] .chip.on{color:#15803d;border-color:#16a34a}
 html[data-theme=gray] .k.ok b{color:#16a34a}html[data-theme=gray] .k.cr b{color:#dc2626}html[data-theme=gray] .k.wa b{color:#b45309}html[data-theme=gray] .k.hk b{color:#db2777}html[data-theme=gray] .k.mt b{color:#0284c7}
 html[data-theme=gray] .ph a,html[data-theme=gray] .sub a{color:#1d4ed8!important}html[data-theme=gray] #tip{box-shadow:0 10px 30px rgba(0,0,0,.18)}
@@ -226,11 +245,13 @@ window.PSDP=(function(){
     <div id="stage">
       <div id="loading">กำลังโหลดโมเดล 3D…</div>
       <div id="empty"><div class="box"><h3 id="emptyT"></h3><p id="emptyP"></p><div class="btns" style="justify-content:center"><button class="btn pr" id="emptyLogin">🔐 เข้าสู่ระบบ</button><a class="btn" href="admin.html" style="text-decoration:none">🖥 เปิดหลังบ้าน IFM</a><button class="btn" id="emptyDemo">🧪 ใช้ Demo 3D</button></div></div></div>
+      <div class="overlay ov-tl" id="bnav"></div>
       <div class="overlay ov-tr">
         <button class="ib" id="vReset" title="มุมมองเริ่มต้น">⌂</button>
         <button class="ib" id="vTop" title="มุมบน (Plan)">▦</button>
         <button class="ib" id="vRot" title="หมุนอัตโนมัติ">⟳</button>
         <button class="ib on" id="vLbl" title="แสดง/ซ่อนป้ายชื่อ">🏷</button>
+        <button class="ib" id="navTg" title="แสดง/ซ่อนรูปอาคาร (เลือกชั้น)">🏢</button>
         <div class="zbox" title="ซูม: ล้อเมาส์ / ปุ่ม + − / ลากแถบ / คีย์บอร์ด + −">
           <button class="ib" id="zIn" title="ซูมเข้า (+)">＋</button>
           <input type="range" id="zr" min="0" max="100" step="1" value="40" aria-label="ระดับซูม">
@@ -396,11 +417,12 @@ async function gasCall(action,body){const c=ifmCfg(),s=ifmSess();
   let j;try{j=await res.json()}catch(e){throw new Error('Web App ตอบกลับไม่ใช่ JSON')}if(!j.ok){const e=new Error(j.error||'Request failed');e.auth=!!j.auth;throw e}return j}
 const ifmLocal=()=>ifmBiz()?LSg(ifmKey(),null):null;
 const ifmData=()=>IFM.remote||ifmLocal();
-async function ifmPull(force){if(!ifmOnline()||IFM.busy)return false;if(!force&&Date.now()-IFM.lastPull<25000)return false;IFM.busy=true;
+async function ifmPull(force){if(!ifmOnline())return false;if(IFM.busy&&!force)return false;if(!force&&Date.now()-IFM.lastPull<25000)return false;IFM.busy=true;const tagK=ifmBiz()+'|'+ifmSite(),my=(IFM.reqId=(IFM.reqId||0)+1);
   try{let j;try{j=await gasCall('view3d')}catch(e){if(/Unknown action/.test(e.message))j=await gasCall('pull');else throw e}
+    if(my!==IFM.reqId||tagK!==ifmBiz()+'|'+ifmSite()||MODE!=='ifm')return false;
     IFM.lastPull=Date.now();IFM.err='';if(j.empty)return false;
     IFM.remote=Object.assign({},ifmLocal()||{},j.config||{},j.tables||{});return true}
-  catch(e){IFM.err=e.message;if(e.auth){try{localStorage.removeItem('psd_ifm_session');localStorage.removeItem('psd_ifm_m_user')}catch(x){}IFM.err='เซสชันหมดอายุ — กรุณาเข้าสู่ระบบใหม่';setTimeout(()=>{renderUser();renderEmpty()},0)}return false}finally{IFM.busy=false}}
+  catch(e){if(my!==IFM.reqId)return false;IFM.err=e.message;if(e.auth){try{localStorage.removeItem('psd_ifm_session');localStorage.removeItem('psd_ifm_m_user')}catch(x){}IFM.err='เซสชันหมดอายุ — กรุณาเข้าสู่ระบบใหม่';setTimeout(()=>{renderUser();renderEmpty()},0)}return false}finally{if(my===IFM.reqId)IFM.busy=false}}
 /* ---- floors & rooms from IFM areas (same layout rule as Building Critical Status 2D) ---- */
 const tokens=s=>String(s||'').toUpperCase().split(/[-–,\/]/).map(x=>x.trim()).filter(Boolean);
 function fName(c){c=String(c);if(/^roof$/i.test(c))return'Roof';if(/^g$/i.test(c))return'Ground (G)';if(/^B\d+$/i.test(c))return'ชั้น '+c.toUpperCase();if(/^\d+$/.test(c))return'ชั้น '+c;return c}
@@ -439,7 +461,7 @@ function deriveIFM(D){const s={assets:{},wr:[],cleaning:{},meet:{},seq:0,log:IFM
   const asByArea={};(D.assets||[]).forEach(x=>{const a=by[x.area];if(!a)return;s.assets[a.id+'/'+x.id]=MAPST[x.status]||'run';(asByArea[a.id]=asByArea[a.id]||[]).push(x)});
   (D.tickets||[]).filter(OPEN_T).forEach(t=>{const a=by[t.area];if(!a)return;const txt=(t.category||'')+' '+(t.desc||''),as=(asByArea[a.id]||[]).find(x=>x.name&&txt.includes(x.name));
     s.wr.push({no:t.id,room:a.id,asset:as?a.id+'/'+as.id:null,assetName:as?as.name:'',title:(t.category?t.category+' · ':'')+(t.desc||''),pri:t.priority||'P3',
-      st:(t.status==='New'||t.status==='On Hold')?'Open':'In Progress',raw:t.status,svc:t.service||'eng',tech:t.assignee||'',time:String(t.date||'').replace('T',' ').slice(5,16),t0:0,tS:0,dur:1e12})});
+      st:(t.status==='New'||t.status==='On Hold')?'Open':'In Progress',raw:t.status,date:t.date||'',svc:t.service||'eng',tech:t.assignee||'',time:String(t.date||'').replace('T',' ').slice(5,16),t0:0,tS:0,dur:1e12})});
   s.wr.sort((x,y)=>String(x.pri).localeCompare(String(y.pri)));
   (D.hkTasks||[]).forEach(h=>{const a=by[h.area];if(!a)return;if(h.status==='Missed')ex(a.id).hkMiss=(ex(a.id).hkMiss||0)+1;
     else if(h.status==='Scheduled'&&(!h.shift||h.shift===sh)&&h.lastDone!==td&&!s.cleaning[a.id])s.cleaning[a.id]={name:h.staff||'แม่บ้าน',task:h.task,hkId:h.id,end:Infinity}});
@@ -498,11 +520,11 @@ async function ifmCommit(ent,rows,del){del=del||[];
 const findRow=(ent,id)=>((ifmData()||{})[ent]||[]).find(r=>String(r.id)===String(id));
 const areaOf=roomId=>(roomDef(roomId)||{}).area;
 const meName=()=>{const u=ifmUser();return u?(u.name||u.username):'3D-eNGINNo'};
-function ifmNewTicket(roomId,o){const a=areaOf(roomId);if(!a)return;const r={id:ifmNextId('tickets','WR',4),service:o.svc||'eng',priority:o.pri||'P3',area:a.name,category:o.cat||'',desc:o.desc||'',requester:meName(),assignee:o.assignee||'',date:isoDT(),status:o.status||'New'};
+function ifmNewTicket(roomId,o){const a=areaOf(roomId);if(!a)return;const r={id:ifmNextId('tickets','WR',4),service:o.svc||'eng',priority:o.pri||'P3',area:a.name,category:o.cat||'',desc:o.desc||'',requester:o.req||meName(),assignee:o.assignee||'',date:isoDT(),status:o.status||'New'};
   if(r.status!=='New')r.respondedAt=isoDT();log(`📝 แจ้งงาน ${r.id} · ${a.name} · ${r.desc}`);return ifmCommit('tickets',[r]).then(()=>r)}
 function ifmTicketSet(no,st){const t=findRow('tickets',no);if(!t)return;const r=Object.assign({},t,{status:st});
-  if(st==='In Progress'){r.assignee=r.assignee||meName();r.respondedAt=r.respondedAt||isoDT()}if(st==='Completed')r.completedAt=isoDT();
-  log(`${st==='Completed'?'✅':'🔧'} ${no} → ${st}${st==='In Progress'?' · '+r.assignee:''}`);return ifmCommit('tickets',[r])}
+  if(st==='Assigned'||st==='In Progress'){r.assignee=r.assignee||meName();r.respondedAt=r.respondedAt||isoDT()}if(st==='Completed')r.completedAt=isoDT();
+  log(`${st==='Completed'?'✅':'🔧'} ${no} → ${st}${st!=='Completed'?' · '+r.assignee:''}`);return ifmCommit('tickets',[r])}
 function ifmAssetSet(a,st){const row=findRow('assets',a.ifm.id)||a.ifm;const r=Object.assign({},row,{status:st});a.ifm=r;log(`${st==='Down'?'⚠':'▶'} ${r.name} → ${st}`);return ifmCommit('assets',[r])}
 /* ---- refresh loop ---- */
 function ifmHashes(D){const L=JSON.stringify([(D&&D.areas||[]).map(a=>[a.id,a.name,a.floor,a.type]),D&&D.bldg||null,(D&&D.assets||[]).map(a=>[a.id,a.area,a.name])]);
@@ -943,7 +965,7 @@ function sync(){
   for(const a of RT.assets.values()){ const st=ast(a), w=s.wr.find(w=>w.asset===a.id&&w.st!=='Completed');
     a.badge.innerHTML = st==='fault' ? `<span class="ab f">⚠ ${a.key}</span>` : w ? `<span class="ab w">🔧 ${w.no}</span>` : st==='warn' ? `<span class="ab w">⚠ Warning</span>` : '';
     a.halo.visible = st==='fault'; }
-  renderKPI(); renderTabs(); renderPanel();
+  renderKPI(); renderTabs(); renderPanel(); renderNav();
 }
 const c0 = rc => rc.ds>0?Math.PI:0;
 
@@ -1037,10 +1059,11 @@ function renderPanel(force){
   const s=S(), P=$('panel');
   if(SEL && SEL.type==='asset' && !RT.assets.get(SEL.id)) SEL=null;
   if(SEL && SEL.type==='room' && !roomDef(SEL.id)) SEL=null;
+  if(!SEL && VIEW!=='ALL' && floorsOf(BKEY).some(f=>f.id===VIEW)){ P.innerHTML=floorPanel(VIEW); return; }
   if(!SEL){
     const open=s.wr.filter(w=>w.st!=='Completed').sort((a,b)=>a.pri.localeCompare(b.pri));
     P.innerHTML = `<div class="ph"><h2>${B[BKEY].icon} ${PSDP.L(B[BKEY].th+' · '+B[BKEY].en,B[BKEY].en)}</h2><div class="sub">${MODE==='ifm'?`🔗 ข้อมูลจริงจาก IFM ${ifmSite()?'· อาคาร <b>'+ifmSite()+'</b>':''} ${ifmOnline()?'· ☁ Google Sheets':'· ข้อมูลในเครื่องนี้'}${IFM.err?' · <span style="color:#fca5a5">❌ '+IFM.err+'</span>':''}<br><a href="admin.html#helpdesk" style="color:#93c5fd">เปิด Helpdesk ในหลังบ้าน ›</a> · <a href="admin.html#bcs" style="color:#93c5fd">Building Critical Status ›</a>`:'🧪 Demo 3D · ภาพรวมสถานะอาคาร · คลิกห้องหรือเครื่องจักรในโมเดลเพื่อดูรายละเอียด'}</div></div>
-      <div class="sec"><h3>งานแจ้งซ่อมที่เปิดอยู่ <span>${open.length}</span></h3>${open.length?open.map(w=>`<div class="li" data-go="${w.room}"><span class="pri ${w.pri}">${w.pri}</span><div class="t"><div>${w.svc?SVC_IC[w.svc]||'':''} <b>${w.no}</b> ${w.title}</div><small>${roomDef(w.room)?.name} · ชั้น ${roomDef(w.room)?.floor} ${w.tech?'· '+w.tech:''}</small></div>${wrChip(w)}</div>`).join(''):'<div class="empty">ไม่มีงานค้าง 🎉</div>'}</div>
+      <div class="sec"><h3>งานแจ้งซ่อมที่เปิดอยู่ <span>${open.length}</span></h3>${open.length&&MODE==='ifm'?open.map(w=>wrRowI(w,true)).join(''):open.length?open.map(w=>`<div class="li" data-go="${w.room}"><span class="pri ${w.pri}">${w.pri}</span><div class="t"><div>${w.svc?SVC_IC[w.svc]||'':''} <b>${w.no}</b> ${w.title}</div><small>${roomDef(w.room)?.name} · ชั้น ${roomDef(w.room)?.floor} ${w.tech?'· '+w.tech:''}</small></div>${wrChip(w)}</div>`).join(''):'<div class="empty">ไม่มีงานค้าง 🎉</div>'}</div>
       <div class="sec"><h3>แม่บ้านกำลังปฏิบัติงาน <span>${Object.keys(s.cleaning).length}</span></h3>${Object.entries(s.cleaning).map(([id,c])=>`<div class="li" data-go="${id}">🧹<div class="t"><div>${roomDef(id)?.name}</div><small>${c.name} · ชั้น ${roomDef(id)?.floor}</small></div></div>`).join('')||'<div class="empty">—</div>'}</div>
       <div class="sec"><h3>Live Activity</h3><div class="feed">${s.log.map(l=>`<div><time>${l.t}</time>${l.m}</div>`).join('')}</div></div>`;
     return; }
@@ -1066,7 +1089,7 @@ function renderPanel(force){
     <div class="sec"><h3>เครื่องจักร / อุปกรณ์ <span>${rc?rc.assets.length:'-'}</span></h3>${rc?rc.assets.filter(a=>MODE!=='ifm'||!a.decor).map(a=>`<div class="li" data-sel="asset:${a.id}"><i class="dot" style="background:#${STC[ast(a)].toString(16).padStart(6,'0')}"></i><div class="t"><div>${a.name}</div><small>${a.key}</small></div>${stChip(ast(a))}</div>`).join('')||'<div class="empty">—</div>':'<div class="empty">เปิดชั้นนี้เพื่อดูอุปกรณ์</div>'}</div>
     <div class="sec"><h3>ทีมงานในพื้นที่ <span>${ppl.length}</span></h3>${ppl.slice(0,40).map(a=>`<div class="li"><i class="dot" style="background:#${ROLES[a.role].c.toString(16).padStart(6,'0')}"></i><div class="t"><div>${a.name} <small>· ${ROLES[a.role].n}</small></div><small>${a.act}</small></div></div>`).join('')||'<div class="empty">ไม่มีคนในพื้นที่</div>'}</div>`;
 }
-const wrRow = w => `<div class="li" style="cursor:default"><span class="pri ${w.pri}">${w.pri}</span><div class="t"><div><b>${w.no}</b> ${w.title}</div><small>${w.st==='In Progress'?(w.tech||'ช่าง')+' กำลังดำเนินการ':'รอรับงาน'} · ${w.time}</small></div>
+const wrRow = w => MODE==='ifm' ? wrRowI(w) : `<div class="li" style="cursor:default"><span class="pri ${w.pri}">${w.pri}</span><div class="t"><div><b>${w.no}</b> ${w.title}</div><small>${w.st==='In Progress'?(w.tech||'ช่าง')+' กำลังดำเนินการ':'รอรับงาน'} · ${w.time}</small></div>
   ${MODE==='ifm'&&!ifmCanEdit()?wrChip(w):w.st==='Open'?`<button class="btn sm" data-wr="start:${w.no}">รับงาน</button>`:`<button class="btn sm pr" data-wr="done:${w.no}">ปิดงาน</button>`}</div>`;
 function renderClockOnly(){ $('clock').textContent = hhmm(); }
 
@@ -1081,7 +1104,9 @@ $('vLbl').onclick=()=>{ LBL=!LBL; $('vLbl').classList.toggle('on',LBL); applyLab
 function applyLabels(){ lr.domElement.style.display = LBL?'':'none'; }
 function select(sel,focus){ SEL=sel; FORM=false; if(sel?.type==='room'){ const d=roomDef(sel.id); if(VIEW!=='ALL' && d && d.floor!==VIEW){ VIEW=d.floor; build(); } if(focus) focusRoom(sel.id); } renderPanel(); }
 $('panel').onclick=e=>{
-  const t=e.target.closest('[data-go],[data-sel],[data-act],[data-wr]'); if(!t) return; e.preventDefault(); const s=S();
+  const t=e.target.closest('[data-go],[data-sel],[data-act],[data-wr],[data-flow],[data-svcf]'); if(!t) return; e.preventDefault(); const s=S();
+  if(t.dataset.flow){ const k=t.dataset.flow.lastIndexOf('|'); return ifmTicketSet(t.dataset.flow.slice(0,k),t.dataset.flow.slice(k+1)); }
+  if(t.dataset.svcf!==undefined){ FSVC=t.dataset.svcf||null; return renderPanel(true); }
   if(t.dataset.go) return select({type:'room',id:t.dataset.go},true);
   if(t.dataset.sel){ const [ty,id]=t.dataset.sel.split(':'); const id2=t.dataset.sel.slice(ty.length+1); return select({type:ty,id:id2},ty==='room'); }
   if(t.dataset.wr){ const [op,no]=t.dataset.wr.split(':'); if(MODE==='ifm') return ifmTicketSet(no,op==='start'?'In Progress':'Completed'); const w=s.wr.find(w=>w.no===no); if(w){ op==='start'?startWR(w):closeWR(w); } return sync(); }
@@ -1097,11 +1122,14 @@ $('panel').onclick=e=>{
   if(act==='meeton'){ s.meet[rid]=6; log(`👥 ${roomDef(rid).name} เริ่มประชุม`); }
   if(act==='meetoff'){ s.meet[rid]=0; log(`🚪 ${roomDef(rid).name} เลิกประชุม`); }
   if(act==='focus') return focusRoom(rid);
-  if(act==='newwr'){ FORM=true; $('wrform').innerHTML=`<form class="form" id="wrf"><input name="t" placeholder="อาการ / รายละเอียด เช่น แอร์ไม่เย็น" required value="${a?(FAULT_TXT[a.kind]||''):''}">
-      ${MODE==='ifm'?`<select name="svc">${Object.entries({eng:'⚙️ Engineering',fac:'🏗 Facility',hk:'🧹 Housekeeping',sec:'🛡 Security',pest:'🐜 Pest Control',gdn:'🌳 Garden',lin:'🧺 Linen'}).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`:''}
-      <select name="p"><option>P1</option><option selected>P2</option><option>P3</option><option>P4</option></select><button class="btn pr">ส่งแจ้งซ่อม</button></form>`;
+  if(act==='newwr'){ FORM=true; $('wrform').innerHTML=`<form class="form" id="wrf">${MODE==='ifm'?'<label>รายละเอียด<textarea name="t" placeholder="อาการ / รายละเอียด เช่น แอร์ไม่เย็น" required>'+(a?(FAULT_TXT[a.kind]||''):'')+'</textarea></label>':`<input name="t" placeholder="อาการ / รายละเอียด เช่น แอร์ไม่เย็น" required value="${a?(FAULT_TXT[a.kind]||''):''}">`}
+      ${MODE==='ifm'?`<label>Service<select name="svc" id="wrSvc">${Object.entries(SVC3).map(([k,v])=>`<option value="${k}">${v[0]} ${v[1]}</option>`).join('')}</select></label>
+      <label>หมวดงาน<input name="cat" list="wrCats" required value="${a?escT(a.ifm&&a.ifm.system||''):''}"><datalist id="wrCats">${CATS3.eng.map(x=>`<option value="${escT(x)}">`).join('')}</datalist></label>
+      <label>ผู้แจ้ง<input name="req" required value="${escT(meName())}"></label><label>ผู้รับผิดชอบ (ถ้ามี)<input name="asg"></label>`:''}
+      <label>Priority<select name="p">${Object.entries(SLA3L).map(([k,v])=>`<option value="${k}" ${k==='P2'?'selected':''}>${v}</option>`).join('')}</select></label><button class="btn pr">ส่งแจ้งซ่อม</button></form>`;
+    if($('wrSvc')) $('wrSvc').onchange=e=>{ $('wrCats').innerHTML=(CATS3[e.target.value]||[]).map(x=>`<option value="${escT(x)}">`).join(''); };
     $('wrf').onsubmit=ev=>{ ev.preventDefault(); FORM=false; const f=new FormData(ev.target);
-      if(MODE==='ifm'){ ifmNewTicket(rid,{svc:f.get('svc'),pri:f.get('p'),cat:a?(a.ifm&&a.ifm.system||a.name):'',desc:(a?a.name+': ':'')+f.get('t')}); return; } const w=addWR(s,{room:rid,asset:a?.id,assetName:a?.name,title:(a?a.name+': ':'')+f.get('t'),pri:f.get('p')}); log(`📝 แจ้งซ่อม ${w.no} · ${roomDef(rid).name} · ${w.title}`); sync(); };
+      if(MODE==='ifm'){ ifmNewTicket(rid,{svc:f.get('svc'),pri:f.get('p'),cat:f.get('cat')||'',desc:(a?a.name+': ':'')+f.get('t'),req:f.get('req'),assignee:f.get('asg')||'',status:f.get('asg')?'Assigned':'New'}); return; } const w=addWR(s,{room:rid,asset:a?.id,assetName:a?.name,title:(a?a.name+': ':'')+f.get('t'),pri:f.get('p')}); log(`📝 แจ้งซ่อม ${w.no} · ${roomDef(rid).name} · ${w.title}`); sync(); };
     return; }
   sync();
 };
@@ -1216,6 +1244,66 @@ function ifmAct(act,a,rid){ const s=S();
     const c=s.cleaning[rid]; if(c&&c.hkId){ const h=findRow('hkTasks',c.hkId); if(h) ifmCommit('hkTasks',[Object.assign({},h,{status:'Done',lastDone:todayS()})]); } }
   if(act==='meeton'||act==='meetoff'){ const d=roomDef(rid); ifmCommit('bookings',[{id:'BK-'+rid,room:rid,roomName:d.name,n:act==='meeton'?6:0,status:act==='meeton'?'active':'ended',start:isoDT(),by:meName()}]); log(act==='meeton'?`👥 ${d.name} เริ่มประชุม`:`🚪 ${d.name} เลิกประชุม`); }
 }
+/* ---------- v1.3: Building navigator (อาคารใส) · Floor panel แบบหลังบ้าน · SLA · Flow งาน ---------- */
+const SLA3={P1:240,P2:480,P3:1440,P4:4320}, SLA3L={P1:'P1 Emergency',P2:'P2 Urgent',P3:'P3 Normal',P4:'P4 Planned'};
+const NEXT3={New:['Assigned','▶ รับงาน'],Assigned:['In Progress','▶ เริ่มงาน'],'In Progress':['Completed','✔ ปิดงาน'],'On Hold':['In Progress','▶ ทำต่อ']};
+const SVC3={eng:['⚙️','Engineering','#F97316'],fac:['🏗','Facility','#3B82F6'],hk:['🧹','Housekeeping','#14B8A6'],sec:['🛡','Security','#A855F7'],pest:['🐜','Pest Control','#84CC16'],gdn:['🌳','Garden','#22C55E'],lin:['🧺','Linen','#EC4899']};
+const CATS3={eng:['HVAC / แอร์','ไฟฟ้า','ประปา / สุขาภิบาล','ระบบดับเพลิง','ลิฟต์ / บันไดเลื่อน','เครื่องจักร','สื่อสาร / IT'],fac:['ฝ้า/เพดาน','พื้น/กระเบื้อง','ประตู/กุญแจ','เฟอร์นิเจอร์','ป้าย/Signage','งานสี/ผนัง','ห้องน้ำ/สุขภัณฑ์'],
+  hk:['ทำความสะอาดเร่งด่วน','ห้องน้ำ','ขยะ/ของเสีย','หกเลอะ/Spill','วัสดุสิ้นเปลือง','กลิ่นไม่พึงประสงค์'],sec:['ตรวจสอบบุคคล','ที่จอดรถ','ของหาย/พบของ','เปิด-ปิดพื้นที่','CCTV/Access','ขอเจ้าหน้าที่คุมพื้นที่'],
+  pest:['แมลงสาบ','หนู','มด','แมลงวัน','ยุง','ปลวก'],gdn:['ตัดหญ้า','ตัดแต่งต้นไม้','รดน้ำ','ต้นไม้ล้ม/กิ่งหัก'],lin:['ขอเบิกผ้า','ผ้าชำรุด','ส่งซักด่วน']};
+const escT=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function sla3(w){ if(!w.date) return null; const st=new Date(w.date).getTime(); if(isNaN(st)) return null; if(w.raw==='On Hold') return {s:'hold'};
+  const left=st+(SLA3[w.pri]||1440)*6e4-Date.now(); return left<0?{s:'breach'}:{s:'open',left:left/6e4}; }
+const fmtDur=m=>m>=1440?Math.floor(m/1440)+'d '+Math.floor(m%1440/60)+'h':m>=60?Math.floor(m/60)+'h '+Math.round(m%60)+'m':Math.max(0,Math.round(m))+'m';
+function wrRowI(w,loc){ const sl=sla3(w), nx=NEXT3[w.raw];
+  const stc=w.raw==='New'?'warn':w.raw==='On Hold'?'standby':'pm', bd=sl&&sl.s==='breach'?'<span class="st crit">Breached</span>':`<span class="st ${stc}">${escT(w.raw||w.st)}</span>`;
+  return `<div class="wr3"${loc?` data-go="${w.room}"`:''}><div class="wr3h"><span class="tag">${escT(w.no)}</span><span>${(SVC3[w.svc]||[''])[0]}</span><span class="d" title="${escT(w.title)}">${escT(w.title)}</span><span class="pri ${w.pri}">${w.pri}</span>${bd}</div>
+    <div class="wr3f"><small>${loc?escT((roomDef(w.room)||{}).name||'')+' · ชั้น '+escT((roomDef(w.room)||{}).floor||'')+' · ':''}${w.tech?'👤 '+escT(w.tech)+' · ':''}${sl&&sl.s==='open'?'⏱ เหลือ '+fmtDur(sl.left)+' · ':''}${escT(w.time||'')}</small>
+    ${MODE==='ifm'&&ifmCanEdit()&&nx?`<button class="btn sm ${nx[0]==='Completed'?'pr':''}" data-flow="${escT(w.no)}|${nx[0]}">${nx[1]}</button>`:MODE!=='ifm'?(w.st==='Open'?`<button class="btn sm" data-wr="start:${w.no}">▶ รับงาน</button>`:`<button class="btn sm pr" data-wr="done:${w.no}">✔ ปิดงาน</button>`):''}</div></div>`; }
+let FSVC=null;
+function floorPanel(fid){ const f=floorsOf(BKEY).find(x=>x.id===fid); if(!f) return ''; const s=S();
+  const rooms=f.rooms.filter(r=>r.type!=='corridor'), ids=new Set(rooms.map(r=>r.id));
+  const wr=s.wr.filter(w=>ids.has(w.room)&&w.st!=='Completed'), stt=rooms.map(r=>roomStatus(r.id)), fs=stt.includes('crit')?'crit':stt.includes('warn')?'warn':'ok';
+  const cnt={}; wr.forEach(w=>{ const k=w.svc||'eng'; cnt[k]=(cnt[k]||0)+1; });
+  const chips=Object.keys(SVC3).filter(k=>cnt[k]).map(k=>`<button class="svc3${FSVC===k?' on':''}" data-svcf="${k}" style="--c:${SVC3[k][2]}"><i></i>${SVC3[k][0]} ${SVC3[k][1]} <b>${cnt[k]}</b></button>`).join('');
+  const cards=rooms.map(r=>{ const ws=wr.filter(w=>w.room===r.id&&(!FSVC||(w.svc||'eng')===FSVC)), st=roomStatus(r.id), ex=(s.ext||{})[r.id]||{};
+      const down=Object.entries(s.assets).filter(([k,v])=>k.startsWith(r.id+'/')&&v==='fault').length, over=ws.filter(w=>{const x=sla3(w);return x&&x.s==='breach'}).length;
+      if(!ws.length&&st==='ok') return null; if(FSVC&&!ws.length) return null;
+      const sum=[ws.length?`WR ${ws.length}${over?` (over SLA ${over})`:''}`:'',down?`Down ${down}`:'',ex.inc?`🛡 ${ex.inc}`:'',ex.pest?`🐜 ${ex.pest}`:'',ex.def?`🏗 ${ex.def}`:'',ex.hkMiss?'🧹 Missed':''].filter(Boolean).join(' · ');
+      return {st,html:`<div class="ac3 ${st}"><div class="ac3h" data-go="${r.id}"><span class="tag">${escT(r.id)}</span><b>${escT(r.name)}</b><span class="sum">${sum}</span></div>${ws.map(w=>wrRowI(w)).join('')}</div>`}; }).filter(Boolean)
+    .sort((a,b)=>({crit:0,warn:1,ok:2}[a.st]-{crit:0,warn:1,ok:2}[b.st]));
+  const okN=stt.filter(x=>x==='ok').length;
+  return `<div class="ph"><div class="btns" style="justify-content:space-between;align-items:center"><h2>${escT(f.label)} — ${escT(f.name)} <span class="st ${fs}">${fs==='ok'?'ปกติ':fs==='warn'?'มีงานแจ้งซ่อม':'วิกฤต'}</span></h2><button class="btn sm" data-view="ALL">✕</button></div>
+    <div class="sub">${rooms.length} พื้นที่ · ปกติ ${okN} · Open WR ${wr.length}${MODE==='ifm'?` · <a href="admin.html#helpdesk" style="color:#93c5fd">เปิด Helpdesk ในหลังบ้าน ›</a>`:''}</div>
+    ${chips?`<div class="svc3w">${chips}${FSVC?'<button class="svc3" data-svcf="">✕ ทั้งหมด</button>':''}</div>`:''}</div>
+    <div class="sec">${cards.length?cards.map(c=>c.html).join(''):'<div class="empty">ทุกพื้นที่ในชั้นนี้ปกติ ✅</div>'}</div>
+    <div class="sec"><h3>Live Activity</h3><div class="feed">${s.log.slice(0,15).map(l=>`<div><time>${l.t}</time>${escT(l.m)}</div>`).join('')}</div></div>`; }
+/* ---- glass building navigator ---- */
+let NAVON=LSg('psd_3d_nav',true);
+function renderNav(){ const box=$('bnav'); if(!box) return; box.style.display=NAVON?'':'none'; $('navTg').classList.toggle('on',NAVON); if(!NAVON) return;
+  const fl=floorsOf(BKEY); if(!fl.length){ box.innerHTML=''; return; }
+  const n=fl.length, H=n>8?24:n>5?30:36, W=150, DX=46, DY=22, X0=34, Y0=40+DY, totH=Y0+n*H+26;
+  const col={ok:['#22c55e','rgba(34,197,94,.22)'],warn:['#f59e0b','rgba(245,158,11,.25)'],crit:['#ef4444','rgba(239,68,68,.28)']};
+  let svg=`<svg viewBox="0 0 ${X0+W+DX+10} ${totH}" width="100%" style="max-height:${Math.min(totH,440)}px">`;
+  svg+=`<line x1="${X0+W/2+DX/2}" y1="${Y0-DY-30}" x2="${X0+W/2+DX/2}" y2="${Y0-DY/2}" stroke="#94a3b8" stroke-width="2"/><circle cx="${X0+W/2+DX/2}" cy="${Y0-DY-30}" r="3" fill="#ef4444"><animate attributeName="opacity" values="1;.2;1" dur="1.4s" repeatCount="indefinite"/></circle>`;
+  svg+=`<polygon points="${X0},${Y0} ${X0+DX},${Y0-DY} ${X0+W+DX},${Y0-DY} ${X0+W},${Y0}" fill="rgba(226,232,240,.35)" stroke="rgba(226,232,240,.6)"/>`;
+  fl.forEach((f,i)=>{ const y=Y0+i*H, rooms=f.rooms.filter(r=>r.type!=='corridor'), st=rooms.map(r=>roomStatus(r.id)), fs=st.includes('crit')?'crit':st.includes('warn')?'warn':'ok', c=col[fs], sel=VIEW===f.id;
+    const nc=st.filter(x=>x==='crit').length, nw=st.filter(x=>x==='warn').length;
+    svg+=`<g class="nf${sel?' sel':''}" data-view="${f.id}" style="cursor:pointer"><title>${escT(f.name)} · ${rooms.length} areas</title>
+      <polygon points="${X0+W},${y} ${X0+W+DX},${y-DY} ${X0+W+DX},${y-DY+H} ${X0+W},${y+H}" fill="${c[1]}" stroke="${sel?'#f97316':c[0]}" stroke-width="${sel?2:1}" opacity=".85"/>
+      <rect x="${X0}" y="${y}" width="${W}" height="${H}" fill="${c[1]}" stroke="${sel?'#f97316':c[0]}" stroke-width="${sel?2.4:1.2}" rx="2"/>
+      <rect x="${X0+3}" y="${y+H-5}" width="${W-6}" height="2" fill="${c[0]}" opacity=".7"/>
+      <text x="${X0-8}" y="${y+H/2+5}" text-anchor="end" font-size="${H>28?15:12}" font-weight="800" fill="${sel?'#f97316':'currentColor'}">${escT(f.label)}</text>`;
+    rooms.slice(0,Math.floor((W-10)/14)).forEach((r,k)=>{ const s2=roomStatus(r.id); svg+=`<circle cx="${X0+10+k*14}" cy="${y+H/2-2}" r="${H>28?5:4}" fill="${col[s2][0]}" stroke="rgba(0,0,0,.35)"><title>${escT(r.name)}</title></circle>`; });
+    if(nc||nw) svg+=`<text x="${X0+W-6}" y="${y+H/2+4}" text-anchor="end" font-size="11" font-weight="700" fill="${nc?'#ef4444':'#f59e0b'}">${nc?'● '+nc:''}${nw?' ● '+nw:''}</text>`;
+    svg+=`</g>`; });
+  svg+=`<rect x="${X0-14}" y="${Y0+n*H}" width="${W+DX+20}" height="8" fill="rgba(100,116,139,.45)" rx="2"/></svg>`;
+  box.innerHTML=`<div class="bnh"><span>🏢 ${PSDP.L('อาคาร — แตะชั้นเพื่อดู','Building — tap a floor')}</span><button class="btn sm${VIEW==='ALL'?' pr':''}" data-view="ALL">${PSDP.L('ทั้งอาคาร','All')}</button></div>${svg}
+    <div class="bnl"><span><i style="background:#22c55e"></i>OK</span><span><i style="background:#f59e0b"></i>Warn</span><span><i style="background:#ef4444"></i>Crit</span></div>`; }
+function setView(v){ VIEW=v; FSVC=null; SEL=null; build(); }
+document.addEventListener('click',e=>{ const t=e.target.closest('[data-view]'); if(t&&(t.closest('#bnav')||t.closest('#panel'))){ e.preventDefault(); e.stopPropagation(); setView(t.dataset.view); } },true);
+
+$('navTg').onclick=()=>{ NAVON=!NAVON; LSs('psd_3d_nav',NAVON); renderNav(); };
 /* ---------- เข้าสู่ระบบ (บัญชีเดียวกับหลังบ้าน / Mobile) ---------- */
 function renderUser(){ const b=$('userBtn'), u=ifmUser();
   if(u){ b.className='chip user'; b.textContent='👤 '+(u.name||u.username); b.title='บัญชีของฉัน · '+(u.role||''); }
@@ -1324,7 +1412,7 @@ const I18N={
 'เครื่องจักร':'machine','ชั้น ':'Floor ','โมเดล':'model','ห้องประชุมจากหน้า 3D':'meeting rooms from 3D',
 'เปิดระบบ':'System started','โหลดสถานะ':'loaded','งานแจ้งซ่อม':'work requests','รับงานแล้ว · ช่าง':'accepted · technician','ปิดงาน ·':'closed ·','เริ่มทำความสะอาด':'started cleaning','ทำความสะอาดเสร็จ':'cleaning done',
 'เริ่มประชุม (':'meeting started (','คน)':'people)','เลิกประชุม → ห้องว่าง':'meeting ended → vacant','แจ้งซ่อมใหม่':'New request','ชำรุด · เปิด':'down · opened','กลับมาทำงานปกติ':'back to normal',
-'บันทึกขึ้น Google Sheets แล้ว':'Saved to Google Sheets','Sync ไม่สำเร็จ:':'Sync failed:','แจ้งงาน':'Request'
+'บันทึกขึ้น Google Sheets แล้ว':'Saved to Google Sheets','▶ เริ่มงาน':'▶ Start','▶ ทำต่อ':'▶ Resume','✔ ปิดงาน':'✔ Complete','▶ รับงาน':'▶ Accept','เหลือ':'left','หมวดงาน':'Category','รายละเอียด':'Details','ผู้แจ้ง':'Requester','ผู้รับผิดชอบ (ถ้ามี)':'Assignee (optional)','ทุกพื้นที่ในชั้นนี้ปกติ ✅':'All areas on this floor are normal ✅','✕ ทั้งหมด':'✕ All','แสดง/ซ่อนรูปอาคาร (เลือกชั้น)':'Show / hide building navigator','Sync ไม่สำเร็จ:':'Sync failed:','แจ้งงาน':'Request'
 };
 const I18K=Object.keys(I18N).sort((a,b)=>b.length-a.length), TH_RE=/[฀-๿]/;
 const I18X=I18K.map(k=>[new RegExp('(?<![฀-๿])'+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![฀-๿])','g'),I18N[k]]);
@@ -1365,7 +1453,7 @@ $('prefBtn').onclick=()=>PSDP.open();
   if(MODE==='ifm'&&!BIZ_IFM[BKEY]) BKEY=ib3||'hotel';
   renderBuildings(); resize(); renderSrc(); renderUser();
   if(ifmCfg().url && !ifmUser()) setTimeout(()=>showLogin(),600);
-  if(MODE==='ifm'){ VIEW='ALL'; ifmRefresh(false); if(!IFM.lh) build(); ifmPull(true).then(ok=>{ if(ok) ifmRefresh(false); renderSrc(); }); } else build();
+  if(MODE==='ifm'){ VIEW=q.get('f')?String(q.get('f')).toUpperCase():'ALL'; ifmRefresh(false); if(!IFM.lh) build(); ifmPull(true).then(ok=>{ if(ok) ifmRefresh(false); renderSrc(); }); } else build();
   PSDP.on(applyPrefs3D);
   $('loading').remove(); loop(); })();
 </script>
