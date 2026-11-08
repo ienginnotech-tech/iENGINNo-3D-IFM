@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script>try{var _r=new URLSearchParams(location.search).get("return");if(_r&&/^[\w.-]+\.html(#[\w-]*)?$/.test(_r))sessionStorage.setItem("psd_return",_r)}catch(e){}</script>
 <title>PSD 3D-eNGINNo IFM SMART BUILDING · Back Office</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@500;700&family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -588,9 +588,74 @@ body{--bcs-card:var(--bg2);--bcs-card2:var(--bg3);--bcs-line:var(--border);--bcs
   #clock,.tb-bc{display:none}
   .sec-title{font-size:20px}
 }
+
+/* ── PSDP shared themes: dark · gray · blue ── */
+html:root[data-theme="dark"]{--bg:#0D1117;--bg2:#161B22;--bg3:#1C2333;--bg4:#21262D;--border:#30363D;--border2:#3D444D;--text:#E6EDF3;--text2:#8B949E;--text3:#6E7681;--grid:rgba(255,255,255,.05);--topbar:rgba(13,17,23,.92);--overlay:rgba(0,0,0,.72);--side:#161B22;--accent:#F97316;color-scheme:dark}
+html:root[data-theme="gray"]{--bg:#E9ECF0;--bg2:#FFFFFF;--bg3:#F1F3F6;--bg4:#E1E5EB;--border:#D3D9E1;--border2:#BCC5D1;--side:#F3F4F7;--text:#0F172A;--text2:#475569;--text3:#64748B;--grid:rgba(15,23,42,.07);--topbar:rgba(233,236,240,.94);--overlay:rgba(15,23,42,.45);--accent:#EA580C;color-scheme:light}
+html:root[data-theme="blue"]{--bg:#071633;--bg2:#0C2149;--bg3:#102A5C;--bg4:#14326B;--border:#1F4080;--border2:#2A4F95;--text:#E0ECFF;--text2:#A9BFE6;--text3:#7F98C4;--grid:rgba(255,255,255,.06);--topbar:rgba(7,22,51,.94);--overlay:rgba(0,0,0,.65);--side:#0A1C42;--accent:#F97316;color-scheme:dark}
 </style>
 </head>
 <body>
+<!-- PSDP: shared Theme / Language / Font preferences (3D · Back Office · Mobile) -->
+<style id="psdp-css">
+#psdp-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:99999;font-family:'Sarabun',system-ui,sans-serif}
+#psdp-ov.on{display:grid}
+.psdp{width:min(430px,94vw);max-height:92vh;overflow:auto;background:var(--psdp-bg);color:var(--psdp-tx);border:1px solid var(--psdp-bd);border-radius:16px;padding:14px 16px 12px;box-shadow:0 24px 70px rgba(0,0,0,.55);-webkit-text-size-adjust:100%}
+.psdp-h{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:16px;padding-bottom:10px;border-bottom:1px solid var(--psdp-bd)}
+.psdp-x{border:0;background:none;color:var(--psdp-mu);font-size:20px;cursor:pointer;line-height:1}
+.psdp-s{padding:12px 0 6px;border-bottom:1px solid var(--psdp-bd)}
+.psdp-s:last-of-type{border-bottom:0}
+.psdp-t{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--psdp-mu);margin-bottom:8px}
+.psdp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.psdp-g.two{grid-template-columns:repeat(2,1fr)}
+.psdp-o{border:1.5px solid var(--psdp-bd);background:transparent;color:inherit;border-radius:12px;padding:10px 6px 8px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit}
+.psdp-o:hover{border-color:#F97316}
+.psdp-o.on{border-color:#F97316;background:rgba(249,115,22,.13)}
+.psdp-o b{font-size:13px}.psdp-o small{font-size:11px;color:var(--psdp-mu)}
+.psdp-sw{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:3px solid #F97316}
+.psdp-sw i{width:12px;height:12px;border-radius:50%;background:#F97316;display:block}
+.psdp-big{font-size:22px;font-weight:800;color:#F97316;line-height:1.1}
+.psdp-o:not(.on) .psdp-big{color:var(--psdp-tx)}
+.psdp-tip{font-size:11.5px;color:var(--psdp-mu);text-align:center;padding-top:8px}
+</style>
+<script>
+window.PSDP=(function(){
+  var K={theme:'psd_3d_theme',lang:'psd_3d_lang',font:'psd_3d_font'},DEF={theme:'dark',lang:'th',font:'sarabun'};
+  var FONTS={orbitron:"'Orbitron','Sarabun',system-ui,sans-serif",courier:"'Courier New','Sarabun',monospace",sarabun:"'Sarabun',system-ui,sans-serif"};
+  var PAL={dark:{bg:'#11161d',tx:'#e6edf3',mu:'#8b949e',bd:'#30363d'},gray:{bg:'#f3f4f6',tx:'#111827',mu:'#6b7280',bd:'#d1d5db'},blue:{bg:'#0c2149',tx:'#e0ecff',mu:'#93acd6',bd:'#1f4080'}};
+  var subs=[],ov=null;
+  function has(k){try{return localStorage.getItem(K[k])!=null}catch(e){return false}}
+  function get(k){try{var v=localStorage.getItem(K[k]);var x=v?JSON.parse(v):DEF[k];return (k==='theme'&&!PAL[x])||(k==='font'&&!FONTS[x])||(k==='lang'&&x!=='th'&&x!=='en')?DEF[k]:x}catch(e){return DEF[k]}}
+  function cur(){return{theme:get('theme'),lang:get('lang'),font:get('font')}}
+  function fire(){var c=cur();subs.forEach(function(f){try{f(c)}catch(e){console.error(e)}});if(ov&&ov.classList.contains('on'))render()}
+  function set(k,v){try{localStorage.setItem(K[k],JSON.stringify(v))}catch(e){}fire()}
+  function on(f){subs.push(f);try{f(cur())}catch(e){console.error(e)}}
+  function L(th,en){return get('lang')==='en'?en:th}
+  function render(){var c=cur(),p=PAL[c.theme],s=ov.style;s.setProperty('--psdp-bg',p.bg);s.setProperty('--psdp-tx',p.tx);s.setProperty('--psdp-mu',p.mu);s.setProperty('--psdp-bd',p.bd);
+    var opt=function(k,v,inner){return '<button type="button" class="psdp-o'+(c[k]===v?' on':'')+'" data-k="'+k+'" data-v="'+v+'">'+inner+'</button>'};
+    var sw=function(bg){return '<span class="psdp-sw" style="background:'+bg+'"><i></i></span>'};
+    ov.innerHTML='<div class="psdp" role="dialog" aria-modal="true"><div class="psdp-h"><span>⚙ Settings — Theme / Language</span><button class="psdp-x" data-x="1" aria-label="close">✕</button></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🎨 THEME / โทนสี</div><div class="psdp-g">'
+       +opt('theme','dark',sw('#0d1117')+'<b>🌙 Dark</b><small>พื้นเข้ม (Default)</small>')
+       +opt('theme','gray',sw('#e5e7eb')+'<b>☁ Gray</b><small>พื้นเทา</small>')
+       +opt('theme','blue',sw('#0c2149')+'<b>🌊 Deep Blue</b><small>พื้นน้ำเงินเข้ม</small>')+'</div></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🌐 ภาษา / LANGUAGE</div><div class="psdp-g two">'
+       +opt('lang','th','<span class="psdp-big">TH</span><b>ภาษาไทย</b><small>Thai</small>')
+       +opt('lang','en','<span class="psdp-big">EN</span><b>English</b><small>อังกฤษ</small>')+'</div></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🔤 FONT / ตัวอักษร</div><div class="psdp-g">'
+       +opt('font','orbitron','<span class="psdp-big" style="font-family:Orbitron,sans-serif;font-size:18px">Aa</span><b style="font-family:Orbitron,sans-serif;font-size:12px">Orbitron</b><small>Digital · Tech</small>')
+       +opt('font','courier','<span class="psdp-big" style="font-family:\'Courier New\',monospace">Aa</span><b style="font-family:\'Courier New\',monospace">Courier New</b><small>Classic · Mono</small>')
+       +opt('font','sarabun','<span class="psdp-big" style="font-family:Sarabun,sans-serif">Aa ก</span><b style="font-family:Sarabun,sans-serif">Sarabun</b><small>Thai · Clean</small>')+'</div></div>'
+     +'<div class="psdp-tip">💡 Sarabun รองรับภาษาไทยดีที่สุด · Orbitron = Digital Style · Courier New = Classic Mono<br>ใช้ร่วมกันทั้ง 3D · หลังบ้าน · Mobile</div></div>'}
+  function open(){if(!ov){ov=document.createElement('div');ov.id='psdp-ov';document.body.appendChild(ov);
+      ov.addEventListener('click',function(e){var b=e.target.closest('[data-k]');if(b){set(b.dataset.k,b.dataset.v);return}if(e.target===ov||e.target.closest('[data-x]'))close()});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})}
+    render();ov.classList.add('on')}
+  function close(){if(ov)ov.classList.remove('on')}
+  window.addEventListener('storage',function(e){for(var k in K)if(e.key===K[k]){fire();break}});
+  return{get:get,set:set,has:has,cur:cur,on:on,L:L,open:open,close:close,FONTS:FONTS,PAL:PAL};
+})();
+</script>
+
 <nav id="sidebar" aria-label="เมนูหลัก">
   <div class="sb-hd">
     <div class="sb-brand">
@@ -628,7 +693,7 @@ body{--bcs-card:var(--bg2);--bcs-card2:var(--bg3);--bcs-line:var(--border);--bcs
       <span id="clock"></span>
       <select class="fc" id="biz-switch" style="width:auto;padding:6px 10px" onchange="setBiz(this.value)" aria-label="ประเภทธุรกิจ"></select>
       <select class="fc" id="site-switch" hidden style="width:auto;max-width:200px;padding:6px 10px" onchange="setSite(this.value)" aria-label="อาคาร"></select>
-      <button class="btn btn-ghost btn-sm" onclick="cycleTheme()" id="theme-btn" title="สลับธีม">ธีม</button>
+      <button class="btn btn-ghost btn-sm" onclick="cycleTheme()" id="theme-btn" title="ธีม · ภาษา · ตัวอักษร">⚙ ธีม / ภาษา</button>
       <a class="btn btn-ghost btn-sm" href="index.html" style="text-decoration:none;border-color:var(--accent);color:var(--accent)" title="เปิดมุมมอง 3D Smart Building">🧊 3D</a>
       <a class="btn btn-ghost btn-sm" href="mobile.html" style="text-decoration:none" title="เปิด Mobile App">📱 Mobile</a>
       <button class="btn btn-primary btn-sm" onclick="quickWR()">+ แจ้งงาน</button>
@@ -1063,7 +1128,7 @@ function barRow(label,v,color,right){return`<div class="metric-row"><div style="
 
 // charts
 function mkChart(id,cfg){if(charts[id]){charts[id].destroy();delete charts[id]}const c=document.getElementById(id);if(c&&window.Chart)charts[id]=new Chart(c,cfg)}
-function chartTheme(){if(!window.Chart)return;Chart.defaults.color=tok('--text2');Chart.defaults.borderColor=tok('--grid');Chart.defaults.font.family="'Sarabun',sans-serif";Chart.defaults.font.size=11}
+function chartTheme(){if(!window.Chart)return;Chart.defaults.color=tok('--text2');Chart.defaults.borderColor=tok('--grid');Chart.defaults.font.family=(window.PSDP?PSDP.FONTS[PSDP.get('font')]:"'Sarabun',sans-serif");Chart.defaults.font.size=11}
 const axOpts=(extra={})=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,boxHeight:10}}},scales:{x:{grid:{color:tok('--grid')}},y:{grid:{color:tok('--grid')},beginAtZero:true}},...extra});
 const pieOpts=()=>({responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'right',labels:{boxWidth:10,boxHeight:10}}}});
 const colorOf=n=>({green:'#22C55E',yellow:'#EAB308',red:'#EF4444',blue:'#3B82F6',teal:'#14B8A6',purple:'#A855F7',orange:'#F97316',gray:'#8B949E'}[n]);
@@ -1353,7 +1418,7 @@ VIEWS.settings=()=>{const S=cap('set'),u=me()||{};const sites=authOnline()?siteO
     <div class="card no-lift"><div class="card-t">ข้อมูลไซต์ — ${P().ic} ${P().en}</div>
       ${sites.length?`<div class="fg" style="margin-bottom:12px"><span class="fl">อาคาร (Site Code)</span><div style="display:flex;gap:6px;flex-wrap:wrap">${sites.map(x=>`<button class="btn ${x.site===gasSite()?'btn-primary':'btn-ghost'} btn-sm" onclick="setSite('${esc(x.site)}')">🏢 ${esc(x.site)}${x.name?' · '+esc(x.name):''}</button>`).join('')}</div>${cap('gas')&&gasSite()?`<div style="margin-top:8px"><button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="siteDel(this)">🗑 ลบอาคาร ${esc(gasSite())} ออกจากระบบ</button><div class="sec-sub" style="margin:4px 0 0">ย้ายโฟลเดอร์อาคาร (Spreadsheet + รูป) ไปถังขยะ Google Drive กู้คืนได้ 30 วัน · ถอดสิทธิ์อาคารนี้จากผู้ใช้</div></div>`:''}</div>`:''}
       <div class="fg" style="margin-bottom:12px"><label class="fl" for="site-name">ชื่อโครงการ / ไซต์</label><input class="fc" id="site-name" value="${esc(D.site)}" ${S?'':'disabled'} onchange="D.site=this.value.trim()||P().site;save();buildChrome();toast('บันทึกชื่อไซต์แล้ว')"></div>
-      <div class="fg" style="margin-bottom:12px"><span class="fl">ธีมการแสดงผล</span><div style="display:flex;gap:8px;flex-wrap:wrap">${[['system','ตามระบบ · เทาเข้ม'],['dark','Dark'],['light','Light']].map(t=>`<button class="btn ${themeMode()===t[0]?'btn-primary':'btn-ghost'} btn-sm" onclick="setTheme('${t[0]}')">${t[1]}</button>`).join('')}</div><div class="sec-sub">ตามระบบ: เครื่องที่ตั้งโหมดสว่าง = พื้นเทาเข้ม · เครื่องที่ตั้งโหมดมืด = Dark</div></div>
+      <div class="fg" style="margin-bottom:12px"><span class="fl">ธีม · ภาษา · ตัวอักษร</span><div style="display:flex;gap:8px;flex-wrap:wrap">${[['dark','🌙 Dark'],['gray','☁ Gray'],['blue','🌊 Deep Blue']].map(t=>`<button class="btn ${themeMode()===t[0]?'btn-primary':'btn-ghost'} btn-sm" onclick="setTheme('${t[0]}')">${t[1]}</button>`).join('')}<button class="btn btn-ghost btn-sm" onclick="PSDP.open()">⚙ ภาษา / ฟอนต์ (${PSDP.get('lang').toUpperCase()} · ${({orbitron:'Orbitron',courier:'Courier New',sarabun:'Sarabun'})[PSDP.get('font')]})</button></div><div class="sec-sub">ใช้ร่วมกันทั้ง 3D · หลังบ้าน · Mobile — เปลี่ยนที่หน้าไหนก็เปลี่ยนทุกหน้า</div></div>
       ${S?'':`<div class="sec-sub">ตั้งค่า Module / KPI / Google Sheets ทำโดย Admin หรือ FM</div>`}
     </div>
   </div>
@@ -2678,7 +2743,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')bcsModalClose()});
 
 VIEWS.bcs=()=>{Q.push(()=>BCS.mount());return `<div class="sec-head"><div><div class="sec-title">🏢 Building Critical Status</div><div class="sec-sub">สถานะอาคาร Real-time · IFM 4-Ring System (WR · HARD · PPM · SOFT) · ทุก Service ในภาพเดียว สำหรับผู้ใช้งานและเจ้าของอาคาร</div></div><div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="quickWR()">+ แจ้งงาน</button></div></div>`+BCS.html('desk')};
 TITLES.bcs='Building Critical Status';
-BCS.host={toast:m=>toast(m),go:v=>showView(v),newWR:area=>{const u=LS.get('psd_ifm_m_user',null);openForm('tickets',null,{area,service:'eng',requester:u?u.name:''})},after:()=>buildNav(),user:()=>''};
+BCS.host={lang:()=>PSDP.get('lang'),toast:m=>toast(m),go:v=>showView(v),newWR:area=>{const u=LS.get('psd_ifm_m_user',null);openForm('tickets',null,{area,service:'eng',requester:u?u.name:''})},after:()=>buildNav(),user:()=>''};
 
 // ---------- navigation / chrome ----------
 const NAV=[['Overview',null,[['dashboard','📊','Command Center','ภาพรวม IFM'],['site','📋','ข้อมูลอาคาร & สัญญา','Building & contract'],['bcs','🏢','Building Critical Status','สถานะอาคาร 4-Ring'],['helpdesk','🎧','Helpdesk','ศูนย์รับแจ้งงาน']]],
@@ -2713,10 +2778,10 @@ function setSite(code){const u=me();if(!u||(u.role!=='admin'&&!hasAcc(u,BIZK,cod
 function setBiz(k){if(!BIZ[k])return;if(me()&&!bizAllowed(k)){denied();buildChrome();return}BIZK=k;LS.set('psd_ifm_biz',k);load();UI.q={};UI.hd={svc:'',st:'',pri:''};buildChrome();render();SYNC.last=null;syncBoot(()=>{buildChrome();render()});toast('เปลี่ยนเป็น '+BIZ[k].ic+' '+BIZ[k].n+' — '+D.site)}
 
 // theme
-function themeMode(){return LS.get('psd_ifm_theme','system')}
-function applyTheme(){document.documentElement.setAttribute('data-theme',themeMode())}
-function setTheme(m){LS.set('psd_ifm_theme',m);applyTheme();render()}
-function cycleTheme(){const o=['system','dark','light'];setTheme(o[(o.indexOf(themeMode())+1)%3]);toast('ธีม: '+{system:'ตามระบบ (เทาเข้ม)',dark:'Dark',light:'Light'}[themeMode()])}
+function themeMode(){return window.PSDP?PSDP.get('theme'):'dark'}
+function applyTheme(){const p=PSDP.cur(),r=document.documentElement,f=PSDP.FONTS[p.font];r.setAttribute('data-theme',p.theme);r.setAttribute('lang',p.lang);r.style.setProperty('--font',f);r.style.setProperty('--font-display',p.font==='sarabun'?"'Rajdhani','Sarabun',sans-serif":f)}
+function setTheme(m){PSDP.set('theme',m)}
+function cycleTheme(){PSDP.open()}
 try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(themeMode()==='system')render()})}catch(e){}
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(t._t);t._t=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)'},2800)}
@@ -2789,7 +2854,7 @@ function lgSrvDemo(){authServerSet('');LG.srv=false;LG.msg='';LG.ok='🧪 ใช
 function afterAuth(){USR.list=null;load();buildChrome();renderUser();if(!viewOk(CUR))CUR='dashboard';render();SYNC.last=null;syncBoot(()=>{buildChrome();render()})}
 function doLogout(){authLogout()}
 SITE.host={toast:m=>toast(m),saved:()=>{},svc:()=>buildNav(),renamed:()=>buildChrome(),reload:()=>{buildChrome();render();if(gasReady())syncBoot(()=>{buildChrome();render()})}};
-AUTH.host={toast:m=>toast(m),client:'desktop',after:()=>{buildChrome();renderUser();if(!viewOk(CUR))CUR='dashboard';render()},reload:()=>{load();buildChrome();renderUser();if(!viewOk(CUR))CUR='dashboard';render();SYNC.last=null;syncBoot(()=>{buildChrome();render()})},
+AUTH.host={tx:(th,en)=>PSDP.L(th,en),toast:m=>toast(m),client:'desktop',after:()=>{buildChrome();renderUser();if(!viewOk(CUR))CUR='dashboard';render()},reload:()=>{load();buildChrome();renderUser();if(!viewOk(CUR))CUR='dashboard';render();SYNC.last=null;syncBoot(()=>{buildChrome();render()})},
   loggedOut:m=>{USR.list=null;renderUser();closeModal();typeof usrEdClose==='function'&&usrEdClose();typeof msetClose==='function'&&msetClose();document.body.classList.remove('sb-open');showLogin(m)}};
 BCS.host.user=()=>{const u=curUser();return u?u.name:''};
 window.addEventListener('storage',e=>{if(e.key===SKEY){if(!me()){renderUser();showLogin('')}else{authApply();afterAuth();document.getElementById('login').hidden=true}}});
@@ -2813,5 +2878,6 @@ applyTheme();authBoot();load();buildChrome();renderUser();if(!me())showLogin();
 else setTimeout(()=>syncBoot(()=>{buildChrome();render()}),50);
 (function(){const h=(location.hash||'').slice(1);CUR=viewOk(h)?h:'dashboard';render()})();
 </script>
+<script>(function(){var first=true;PSDP.on(function(){try{applyTheme()}catch(e){}if(!first){try{buildChrome();renderUser();render()}catch(e){console.error(e)}}first=false})})();</script>
 </body>
 </html>

@@ -122,6 +122,10 @@
 - งานซ่อม: **รับงาน** → In Progress · **ปิดงาน** → Completed
 - เครื่องจักร: **⚠ แจ้งชำรุด (Down)** → เปิดงานซ่อมอัตโนมัติ · **✔ ซ่อมเสร็จ** · Start / Standby
 
+**ธีม · ภาษา · ตัวอักษร** — ปุ่ม ⚙ (หน้า 3D) / ⚙ ธีม / ภาษา (หลังบ้าน) / Settings (Mobile)
+- Theme: 🌙 Dark · ☁ Gray · 🌊 Deep Blue  ·  ภาษา: TH / EN (ปุ่ม 🌐 บนหน้า 3D สลับได้ทันที)  ·  Font: Orbitron / Courier New / Sarabun
+- ตั้งที่หน้าไหนก็เปลี่ยนทุกหน้าในเบราว์เซอร์เดียวกัน (แท็บที่เปิดอยู่เปลี่ยนตามทันที)
+
 **สัญลักษณ์**
 | เห็นอะไร | หมายถึง |
 |---|---|
@@ -191,6 +195,7 @@ Google Drive / PSD 3D-eNGINNo IFM SMART BUILDING /
 |---|---|---|
 | 2026-11-08 | v1.0 | รวม 3D + IFM Management + IFM Mobile เป็นระบบเดียว · Backend `Code.gs` v3D-1.0 · ฐานข้อมูล Google Sheets |
 | 2026-11-08 | v1.1 | โลโก้ 3D-iFM · ซูม 10 ระดับ + ดับเบิลคลิก · ปุ่ม 🔐 เข้าสู่ระบบบนหน้า 3D · รองรับ `?srv=` บนหน้า 3D |
+| 2026-11-08 | v1.2 | ⚙ ตั้งค่า **ธีม** (Dark / Gray / Deep Blue) · **ภาษา** (TH / EN) · **ตัวอักษร** (Orbitron / Courier New / Sarabun) ใช้ร่วมกันทั้ง 3D · หลังบ้าน · Mobile · ปุ่ม 🌐 TH/EN บนหน้า 3D · `Code.gs` v3D-1.1 (ผู้ใช้ที่ล็อกอินมีลำดับเหนือ API Key) |
 
 ---
 PSD 3D-eNGINNo · IFM SMART BUILDING · 2026

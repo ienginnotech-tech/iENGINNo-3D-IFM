@@ -6,7 +6,7 @@
 <title>PSD 3D-eNGINNo IFM SMART BUILDING · Mobile</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Orbitron:wght@500;700&family=Barlow+Condensed:wght@500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <link rel="manifest" href="manifest.json">
@@ -501,9 +501,73 @@ fieldset.au-fs{border:0;padding:0;margin:0;min-width:0}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 body.theme-dark .toast{background:#e6edf3;color:#0d1117}
 @media(min-width:620px){.stat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.list.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+body.theme-dark.theme-blue{--color-bg:#071633;--color-surface:#0c2149;--color-card:#0a1d42;--color-text:#e0ecff;--color-divider:rgba(224,236,255,.18);
+  --color-neutral-100:#0c2149;--color-neutral-200:#102a5c;--color-neutral-300:#1f4080;--color-neutral-500:#7f98c4;--color-neutral-600:#93acd6;--color-neutral-700:#a9bfe6;--color-neutral-800:#cfdcf5;
+  --color-accent-100:#12305f;--sheet-bg:#0c2149;--desk:#040e24}
 </style>
 </head>
 <body>
+<!-- PSDP: shared Theme / Language / Font preferences (3D · Back Office · Mobile) -->
+<style id="psdp-css">
+#psdp-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:99999;font-family:'Sarabun',system-ui,sans-serif}
+#psdp-ov.on{display:grid}
+.psdp{width:min(430px,94vw);max-height:92vh;overflow:auto;background:var(--psdp-bg);color:var(--psdp-tx);border:1px solid var(--psdp-bd);border-radius:16px;padding:14px 16px 12px;box-shadow:0 24px 70px rgba(0,0,0,.55);-webkit-text-size-adjust:100%}
+.psdp-h{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:16px;padding-bottom:10px;border-bottom:1px solid var(--psdp-bd)}
+.psdp-x{border:0;background:none;color:var(--psdp-mu);font-size:20px;cursor:pointer;line-height:1}
+.psdp-s{padding:12px 0 6px;border-bottom:1px solid var(--psdp-bd)}
+.psdp-s:last-of-type{border-bottom:0}
+.psdp-t{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--psdp-mu);margin-bottom:8px}
+.psdp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.psdp-g.two{grid-template-columns:repeat(2,1fr)}
+.psdp-o{border:1.5px solid var(--psdp-bd);background:transparent;color:inherit;border-radius:12px;padding:10px 6px 8px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit}
+.psdp-o:hover{border-color:#F97316}
+.psdp-o.on{border-color:#F97316;background:rgba(249,115,22,.13)}
+.psdp-o b{font-size:13px}.psdp-o small{font-size:11px;color:var(--psdp-mu)}
+.psdp-sw{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:3px solid #F97316}
+.psdp-sw i{width:12px;height:12px;border-radius:50%;background:#F97316;display:block}
+.psdp-big{font-size:22px;font-weight:800;color:#F97316;line-height:1.1}
+.psdp-o:not(.on) .psdp-big{color:var(--psdp-tx)}
+.psdp-tip{font-size:11.5px;color:var(--psdp-mu);text-align:center;padding-top:8px}
+</style>
+<script>
+window.PSDP=(function(){
+  var K={theme:'psd_3d_theme',lang:'psd_3d_lang',font:'psd_3d_font'},DEF={theme:'dark',lang:'th',font:'sarabun'};
+  var FONTS={orbitron:"'Orbitron','Sarabun',system-ui,sans-serif",courier:"'Courier New','Sarabun',monospace",sarabun:"'Sarabun',system-ui,sans-serif"};
+  var PAL={dark:{bg:'#11161d',tx:'#e6edf3',mu:'#8b949e',bd:'#30363d'},gray:{bg:'#f3f4f6',tx:'#111827',mu:'#6b7280',bd:'#d1d5db'},blue:{bg:'#0c2149',tx:'#e0ecff',mu:'#93acd6',bd:'#1f4080'}};
+  var subs=[],ov=null;
+  function has(k){try{return localStorage.getItem(K[k])!=null}catch(e){return false}}
+  function get(k){try{var v=localStorage.getItem(K[k]);var x=v?JSON.parse(v):DEF[k];return (k==='theme'&&!PAL[x])||(k==='font'&&!FONTS[x])||(k==='lang'&&x!=='th'&&x!=='en')?DEF[k]:x}catch(e){return DEF[k]}}
+  function cur(){return{theme:get('theme'),lang:get('lang'),font:get('font')}}
+  function fire(){var c=cur();subs.forEach(function(f){try{f(c)}catch(e){console.error(e)}});if(ov&&ov.classList.contains('on'))render()}
+  function set(k,v){try{localStorage.setItem(K[k],JSON.stringify(v))}catch(e){}fire()}
+  function on(f){subs.push(f);try{f(cur())}catch(e){console.error(e)}}
+  function L(th,en){return get('lang')==='en'?en:th}
+  function render(){var c=cur(),p=PAL[c.theme],s=ov.style;s.setProperty('--psdp-bg',p.bg);s.setProperty('--psdp-tx',p.tx);s.setProperty('--psdp-mu',p.mu);s.setProperty('--psdp-bd',p.bd);
+    var opt=function(k,v,inner){return '<button type="button" class="psdp-o'+(c[k]===v?' on':'')+'" data-k="'+k+'" data-v="'+v+'">'+inner+'</button>'};
+    var sw=function(bg){return '<span class="psdp-sw" style="background:'+bg+'"><i></i></span>'};
+    ov.innerHTML='<div class="psdp" role="dialog" aria-modal="true"><div class="psdp-h"><span>⚙ Settings — Theme / Language</span><button class="psdp-x" data-x="1" aria-label="close">✕</button></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🎨 THEME / โทนสี</div><div class="psdp-g">'
+       +opt('theme','dark',sw('#0d1117')+'<b>🌙 Dark</b><small>พื้นเข้ม (Default)</small>')
+       +opt('theme','gray',sw('#e5e7eb')+'<b>☁ Gray</b><small>พื้นเทา</small>')
+       +opt('theme','blue',sw('#0c2149')+'<b>🌊 Deep Blue</b><small>พื้นน้ำเงินเข้ม</small>')+'</div></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🌐 ภาษา / LANGUAGE</div><div class="psdp-g two">'
+       +opt('lang','th','<span class="psdp-big">TH</span><b>ภาษาไทย</b><small>Thai</small>')
+       +opt('lang','en','<span class="psdp-big">EN</span><b>English</b><small>อังกฤษ</small>')+'</div></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🔤 FONT / ตัวอักษร</div><div class="psdp-g">'
+       +opt('font','orbitron','<span class="psdp-big" style="font-family:Orbitron,sans-serif;font-size:18px">Aa</span><b style="font-family:Orbitron,sans-serif;font-size:12px">Orbitron</b><small>Digital · Tech</small>')
+       +opt('font','courier','<span class="psdp-big" style="font-family:\'Courier New\',monospace">Aa</span><b style="font-family:\'Courier New\',monospace">Courier New</b><small>Classic · Mono</small>')
+       +opt('font','sarabun','<span class="psdp-big" style="font-family:Sarabun,sans-serif">Aa ก</span><b style="font-family:Sarabun,sans-serif">Sarabun</b><small>Thai · Clean</small>')+'</div></div>'
+     +'<div class="psdp-tip">💡 Sarabun รองรับภาษาไทยดีที่สุด · Orbitron = Digital Style · Courier New = Classic Mono<br>ใช้ร่วมกันทั้ง 3D · หลังบ้าน · Mobile</div></div>'}
+  function open(){if(!ov){ov=document.createElement('div');ov.id='psdp-ov';document.body.appendChild(ov);
+      ov.addEventListener('click',function(e){var b=e.target.closest('[data-k]');if(b){set(b.dataset.k,b.dataset.v);return}if(e.target===ov||e.target.closest('[data-x]'))close()});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})}
+    render();ov.classList.add('on')}
+  function close(){if(ov)ov.classList.remove('on')}
+  window.addEventListener('storage',function(e){for(var k in K)if(e.key===K[k]){fire();break}});
+  return{get:get,set:set,has:has,cur:cur,on:on,L:L,open:open,close:close,FONTS:FONTS,PAL:PAL};
+})();
+</script>
+
 <div id="app-root"></div>
 <div id="sheet-root"></div>
 <div class="toast" id="toast" role="status"></div>
@@ -921,12 +985,10 @@ const svcName=k=>SVC[k]?(ST.lang==='en'?SVC[k].n:SVC[k].th):k;
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast._h);toast._h=setTimeout(()=>t.classList.remove('show'),2400)}
 function applyPrefs(){
-  const th=LS.get(MK.theme,'system'),ft=LS.get(MK.font,'default');
-  let dark=th==='dark';
-  let dim=false;if(th==='system'){const dt=document.documentElement.getAttribute('data-theme');const osDark=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;dark=dt?dt==='dark':true;dim=!dt&&!osDark}
-  document.body.classList.toggle('theme-dark',dark);document.body.classList.toggle('theme-dim',dim);
-  document.body.classList.toggle('font-sarabun',ft==='sarabun');
-  const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',dim?'#2d333b':dark?'#0d1117':'#f2f2f3');
+  const p=PSDP.cur(),dark=p.theme!=='gray',f=PSDP.FONTS[p.font],b=document.body;
+  b.classList.toggle('theme-dark',dark);b.classList.remove('theme-dim');b.classList.toggle('theme-blue',p.theme==='blue');b.classList.remove('font-sarabun');
+  b.style.setProperty('--font-body',f);b.style.setProperty('--font-heading',p.font==='sarabun'?'"Sarabun",system-ui,sans-serif':f);
+  const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',p.theme==='blue'?'#071633':dark?'#0d1117':'#f2f2f3');
 }
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{applyPrefs()})}catch(e){}
 
@@ -938,7 +1000,7 @@ function footerLegal(){return '<div class="footer-legal"><div class="l1"><span s
   +'<div class="l2">IFM – Integrated Facility Management · Engineering · Facility · Housekeeping · Security · Pest Control · Garden · Linen</div>'
   +'<div class="l3">MR.KITTANAN ONSEE | Copyright - Edition V1.0-2026</div></div>'}
 function segLang(){const th=ST.lang!=='en';return '<div class="seg"><button class="seg-opt '+(th?'active':'')+'" onclick="setLang(\'th\')">TH</button><button class="seg-opt '+(!th?'active':'')+'" onclick="setLang(\'en\')">EN</button></div>'}
-function setLang(l){ST.lang=l;LS.set(MK.lang,l);render()}
+function setLang(l){ST.lang=l;LS.set(MK.lang,l);if(PSDP.get('lang')!==l||!PSDP.has('lang'))PSDP.set('lang',l);render()}
 
 /* ---------- screens: splash / login ---------- */
 function screenSplash(){
@@ -1187,8 +1249,8 @@ function viewSettings(){const u=ST.user,th=LS.get(MK.theme,'system'),ft=LS.get(M
   +(SET?['Hard','Soft']:[]).map(g=>{const ks=g==='Hard'?['eng','fac']:['hk','sec','pest','gdn','lin'];return '<div class="blueprint pad" style="display:flex;flex-direction:column;gap:8px"><div class="kick" style="color:var(--'+(g==='Hard'?'hard':'soft')+')">'+g+' Service · '+ks.filter(svcSite).length+'/'+ks.length+'</div>'+ks.map(k=>'<label class="row" style="justify-content:space-between;cursor:pointer"><span>'+SVC[k].ic+' <b>'+SVC[k].n+'</b> <span style="font-size:12.5px;color:var(--color-neutral-700)">'+SVC[k].th+'</span></span><input type="checkbox" style="width:20px;height:20px;accent-color:var(--color-accent)" '+(svcSite(k)?'checked':'')+' onchange="toggleSvcM(\''+k+'\',this.checked)"></label>').join('')+'</div>'}).join('')
   +'<div class="sec-t"><h2>'+tx('การแสดงผล','Display')+'</h2></div>'
   +'<div><div class="kick" style="margin-bottom:6px">'+tx('ภาษา','Language')+'</div>'+segLang()+'</div>'
-  +'<div><div class="kick" style="margin-bottom:6px">'+tx('ธีม','Theme')+'</div><div style="display:flex;gap:8px">'+[['system',tx('ตามระบบ · เทาเข้ม','System · dim')],['light','Light'],['dark','Dark']].map(o=>'<button class="pref-opt '+(th===o[0]?'active':'')+'" onclick="LS.set(MK.theme,\''+o[0]+'\');applyPrefs();render()">'+o[1]+'</button>').join('')+'</div></div>'
-  +'<div><div class="kick" style="margin-bottom:6px">'+tx('ฟอนต์','Font')+'</div><div style="display:flex;gap:8px">'+[['default','Barlow'],['sarabun','Sarabun']].map(o=>'<button class="pref-opt '+(ft===o[0]?'active':'')+'" style="font-family:'+(o[0]==='sarabun'?'Sarabun':'Barlow')+'" onclick="LS.set(MK.font,\''+o[0]+'\');applyPrefs();render()">'+o[1]+'</button>').join('')+'</div></div>'
+  +'<div><div class="kick" style="margin-bottom:6px">'+tx('ธีม','Theme')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+[['dark','🌙 Dark'],['gray','☁ Gray'],['blue','🌊 Deep Blue']].map(o=>'<button class="pref-opt '+(PSDP.get('theme')===o[0]?'active':'')+'" onclick="PSDP.set(\'theme\',\''+o[0]+'\')">'+o[1]+'</button>').join('')+'</div></div>'
+  +'<div><div class="kick" style="margin-bottom:6px">'+tx('ฟอนต์','Font')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+[['orbitron','Orbitron'],['courier','Courier New'],['sarabun','Sarabun']].map(o=>'<button class="pref-opt '+(PSDP.get('font')===o[0]?'active':'')+'" style="font-family:'+PSDP.FONTS[o[0]].replace(/"/g,'')+'" onclick="PSDP.set(\'font\',\''+o[0]+'\')">'+o[1]+'</button>').join('')+'<button class="pref-opt" onclick="PSDP.open()">⚙ '+tx('ทั้งหมด','All')+'</button></div></div>'
   +'<div class="sec-t"><h2>🔑 '+tx('เปลี่ยนรหัสผ่าน','Change password')+'</h2></div><div class="blueprint pad">'+pwFormHTML()+'</div>'
   +'<div class="sec-t"><h2>☁ Google Sheets</h2></div>'+(cap('gas')?mGasForm():'<div class="blueprint pad"><div id="m-sync" style="font-size:14px">'+mSyncText()+'</div></div>')
   +'<div class="sec-t"><h2>'+tx('ข้อมูล','Data')+'</h2></div>'
@@ -2524,5 +2586,6 @@ GUARD('omLogOpen',id=>canEdit('omLog',id?rowOf('omLog',id):null));
 
 applyPrefs();authBoot();ST.user=stUser();load();render();if(ST.user)setTimeout(()=>syncBoot(()=>{if(!FM)render()}),50);
 </script>
+<script>(function(){var first=true;PSDP.on(function(c){try{applyPrefs()}catch(e){}var ch=false;if(PSDP.has('lang')&&ST.lang!==c.lang){ST.lang=c.lang;LS.set(MK.lang,c.lang);ch=true}if(!first||ch){try{render()}catch(e){console.error(e)}}first=false})})();</script>
 </body>
 </html>

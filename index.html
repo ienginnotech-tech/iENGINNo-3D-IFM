@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PSD 3D-eNGINNo IFM SMART BUILDING</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b1220;--pn:#0f172a;--pn2:#111c33;--bd:#1f2b44;--tx:#e2e8f0;--mu:#8a9ab5;--ac:#f97316;--ok:#22c55e;--wa:#f59e0b;--cr:#ef4444;--hk:#ec4899;--mt:#38bdf8}
+:root{--in:#0a1324;--ovl:rgba(15,23,42,.92);--font:'Sarabun',system-ui,sans-serif;--bg:#0b1220;--pn:#0f172a;--pn2:#111c33;--bd:#1f2b44;--tx:#e2e8f0;--mu:#8a9ab5;--ac:#f97316;--ok:#22c55e;--wa:#f59e0b;--cr:#ef4444;--hk:#ec4899;--mt:#38bdf8}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:13px;overflow:hidden}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:var(--font);font-size:13px;overflow:hidden}
 button,select,input{font:inherit;color:inherit}
 #app{display:grid;grid-template-rows:auto auto 1fr;height:100vh}
 header{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--pn);border-bottom:1px solid var(--bd);flex-wrap:wrap}
@@ -17,15 +17,15 @@ header{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(
 .logo{min-width:34px;height:34px;padding:0 8px;border-radius:8px;white-space:nowrap;background:var(--ac);display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff}
 .brand small{display:block;color:var(--ac);font-size:10px;font-weight:600;letter-spacing:.06em}
 .brand b{font-size:15px}
-.seg{display:flex;gap:4px;background:#0a1324;border:1px solid var(--bd);border-radius:10px;padding:3px;flex-wrap:wrap}
+.seg{display:flex;gap:4px;background:var(--in);border:1px solid var(--bd);border-radius:10px;padding:3px;flex-wrap:wrap}
 .seg button{background:none;border:0;padding:6px 10px;border-radius:7px;cursor:pointer;color:var(--mu);white-space:nowrap}
 .seg button.on{background:var(--ac);color:#fff}
-.seg button:hover:not(.on){background:#16223a;color:var(--tx)}
+.seg button:hover:not(.on){background:var(--pn2);color:var(--tx)}
 .sp{flex:1}
-.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--bd);background:#0a1324;border-radius:999px;padding:5px 10px;cursor:pointer;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--bd);background:var(--in);border-radius:999px;padding:5px 10px;cursor:pointer;white-space:nowrap}
 .chip.on{border-color:var(--ok);color:#86efac}
 .clock{font-variant-numeric:tabular-nums;color:var(--mu)}
-.bar2{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--bd);background:#0c1528;flex-wrap:wrap}
+.bar2{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--bd);background:var(--pn);flex-wrap:wrap}
 .kpi{display:flex;gap:8px;flex-wrap:wrap}
 .k{border:1px solid var(--bd);border-left:3px solid var(--mu);border-radius:8px;padding:4px 10px;background:var(--pn);min-width:92px}
 .k small{display:block;color:var(--mu);font-size:10.5px}
@@ -42,18 +42,18 @@ main{display:grid;grid-template-columns:1fr 360px;min-height:0}
 aside{border-left:1px solid var(--bd);background:var(--pn);overflow:auto;min-height:0}
 .overlay{position:absolute;display:flex;gap:6px;z-index:5}
 .ov-tr{top:10px;right:10px;flex-direction:column;align-items:center}
-.zbox{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(15,23,42,.92);border:1px solid var(--bd);border-radius:10px;padding:5px 0}
+.zbox{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--ovl);border:1px solid var(--bd);border-radius:10px;padding:5px 0}
 .zbox .ib{border:0;background:none;width:32px;height:28px;font-size:18px;font-weight:700}
 #zr{writing-mode:vertical-lr;direction:rtl;width:22px;height:150px;accent-color:var(--ac);cursor:pointer}
 #zl{font-size:10.5px;color:var(--mu);font-variant-numeric:tabular-nums}
-.zpre{display:flex;flex-direction:column;gap:3px}.zpre button{font-size:10.5px;width:44px;padding:3px 0;border-radius:6px;border:1px solid var(--bd);background:rgba(15,23,42,.92);cursor:pointer;color:var(--mu)}
+.zpre{display:flex;flex-direction:column;gap:3px}.zpre button{font-size:10.5px;width:44px;padding:3px 0;border-radius:6px;border:1px solid var(--bd);background:var(--ovl);cursor:pointer;color:var(--mu)}
 .zpre button:hover{border-color:var(--ac);color:var(--ac)}
-.ov-bl{left:10px;bottom:10px;flex-direction:column;gap:4px;background:rgba(10,19,36,.88);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;font-size:11.5px;max-width:330px}
+.ov-bl{left:10px;bottom:10px;flex-direction:column;gap:4px;background:var(--ovl);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;font-size:11.5px;max-width:330px}
 .ov-bl .row{display:flex;flex-wrap:wrap;gap:4px 10px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:-1px}
-.ib{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd);background:rgba(15,23,42,.92);cursor:pointer;font-size:15px}
+.ib{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd);background:var(--ovl);cursor:pointer;font-size:15px}
 .ib:hover,.ib.on{border-color:var(--ac);color:var(--ac)}
-.hint{position:absolute;bottom:10px;right:10px;color:var(--mu);font-size:11px;background:rgba(10,19,36,.8);padding:4px 8px;border-radius:6px}
+.hint{position:absolute;bottom:10px;right:10px;color:var(--mu);font-size:11px;background:var(--ovl);padding:4px 8px;border-radius:6px}
 /* room labels */
 .rl{transform:translateY(-6px);text-align:center;font-size:11px;line-height:1.2}
 .rl .rn{background:rgba(10,19,36,.82);border:1px solid #2a3a5a;padding:2px 7px;border-radius:6px;white-space:nowrap;font-weight:600}
@@ -72,7 +72,7 @@ aside{border-left:1px solid var(--bd);background:var(--pn);overflow:auto;min-hei
 .flabel{font-size:22px;font-weight:700;color:#fff;background:var(--ac);border-radius:8px;padding:2px 12px}
 @keyframes blink{50%{opacity:.45}}
 /* tooltip */
-#tip{position:fixed;z-index:50;pointer-events:none;background:rgba(9,15,29,.97);border:1px solid #2c3d61;border-radius:10px;padding:10px 12px;min-width:220px;max-width:300px;box-shadow:0 10px 30px rgba(0,0,0,.5);display:none;font-size:12px}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;min-width:220px;max-width:300px;box-shadow:0 10px 30px rgba(0,0,0,.5);display:none;font-size:12px}
 #tip h4{margin:0 0 4px;font-size:13px}
 #tip .sub{color:var(--mu);font-size:11px;margin-bottom:6px}
 #tip table{width:100%;border-collapse:collapse}
@@ -87,29 +87,29 @@ aside{border-left:1px solid var(--bd);background:var(--pn);overflow:auto;min-hei
 .sec{padding:12px 16px;border-bottom:1px solid var(--bd)}
 .sec h3{margin:0 0 8px;font-size:12px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center}
 .li{display:flex;align-items:center;gap:8px;padding:7px 8px;border:1px solid var(--bd);border-radius:8px;margin-bottom:6px;background:var(--pn2);cursor:pointer}
-.li:hover{border-color:#3b5280}
+.li:hover{border-color:var(--mu)}
 .li .t{flex:1;min-width:0}
 .li .t div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .li .t small{color:var(--mu)}
 .pri{font-size:10px;font-weight:700;border-radius:5px;padding:1px 5px;background:#334155}
 .pri.P1{background:var(--cr);color:#fff}.pri.P2{background:#ea580c;color:#fff}.pri.P3{background:#ca8a04;color:#111}.pri.P4{background:#475569}
 .btns{display:flex;gap:6px;flex-wrap:wrap}
-.btn{border:1px solid var(--bd);background:#14203a;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px}
+.btn{border:1px solid var(--bd);background:var(--pn2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px}
 .btn:hover{border-color:var(--ac)}
 .btn.pr{background:var(--ac);border-color:var(--ac);color:#fff}
 .btn.dg{border-color:#7f1d1d;color:#fca5a5}
 .btn.sm{padding:3px 8px;font-size:11px}
 .feed{font-size:11.5px;max-height:260px;overflow:auto}
-.feed div{padding:4px 0;border-bottom:1px dashed #1c2740;color:#cbd5e1}
+.feed div{padding:4px 0;border-bottom:1px dashed var(--bd);color:#cbd5e1}
 .feed time{color:var(--mu);margin-right:6px;font-variant-numeric:tabular-nums}
 .kv{display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:12px}
 .kv span:nth-child(even){font-weight:600;text-align:right}
 .form{display:grid;gap:6px;margin-top:8px}
-.form input,.form select{background:#0a1324;border:1px solid var(--bd);border-radius:7px;padding:6px 8px}
+.form input,.form select{background:var(--in);border:1px solid var(--bd);border-radius:7px;padding:6px 8px}
 .empty{color:var(--mu);font-size:12px}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:60}
 #modal .box{width:min(820px,94vw);max-height:86vh;overflow:auto;background:var(--pn);border:1px solid var(--bd);border-radius:12px;padding:16px}
-#modal pre{background:#070d1a;border:1px solid var(--bd);border-radius:8px;padding:10px;font-size:11px;max-height:46vh;overflow:auto;white-space:pre}
+#modal pre{background:var(--in);border:1px solid var(--bd);border-radius:8px;padding:10px;font-size:11px;max-height:46vh;overflow:auto;white-space:pre}
 #modal table{border-collapse:collapse;width:100%;font-size:12px;margin:8px 0}
 #modal td,#modal th{border:1px solid var(--bd);padding:4px 6px;text-align:left}
 #loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--mu)}
@@ -119,14 +119,17 @@ aside{border-left:1px solid var(--bd);background:var(--pn);overflow:auto;min-hei
 .chip.src{border-color:var(--ac);color:#fdba74}.chip.src.demo{border-color:#64748b;color:#cbd5e1}
 a.chip{text-decoration:none;color:var(--tx)}
 .chip.login{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
-.chip.user{border-color:#3b5280}
+.chip.user{border-color:var(--mu)}
 .lgf{display:grid;gap:10px;max-width:380px;margin:6px auto 0}
 .lgf label{display:grid;gap:4px;font-size:12px;color:var(--mu)}
-.lgf input{background:#0a1324;border:1px solid var(--bd);border-radius:8px;padding:9px 10px;font-size:14px;color:var(--tx)}
+.lgf input{background:var(--in);border:1px solid var(--bd);border-radius:8px;padding:9px 10px;font-size:14px;color:var(--tx)}
 .lgmsg{background:#3b0d0d;border:1px solid #7f1d1d;color:#fecaca;border-radius:8px;padding:8px 10px;font-size:12.5px}
 .lgok{background:#052e16;border:1px solid #166534;color:#bbf7d0;border-radius:8px;padding:8px 10px;font-size:12.5px}
 #srcInfo{color:var(--mu);font-size:11.5px;margin-left:auto;white-space:nowrap}
 #srcInfo b{color:var(--tx)}
+html[data-theme=gray] .chip.src{color:#c2410c}html[data-theme=gray] .chip.on{color:#15803d;border-color:#16a34a}
+html[data-theme=gray] .k.ok b{color:#16a34a}html[data-theme=gray] .k.cr b{color:#dc2626}html[data-theme=gray] .k.wa b{color:#b45309}html[data-theme=gray] .k.hk b{color:#db2777}html[data-theme=gray] .k.mt b{color:#0284c7}
+html[data-theme=gray] .ph a,html[data-theme=gray] .sub a{color:#1d4ed8!important}html[data-theme=gray] #tip{box-shadow:0 10px 30px rgba(0,0,0,.18)}
 @media (max-width:900px){
   main{grid-template-columns:1fr;grid-template-rows:1fr 42%}
   aside{border-left:0;border-top:1px solid var(--bd)}
@@ -139,6 +142,66 @@ a.chip{text-decoration:none;color:var(--tx)}
 </script>
 </head>
 <body>
+<!-- PSDP: shared Theme / Language / Font preferences (3D · Back Office · Mobile) -->
+<style id="psdp-css">
+#psdp-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;z-index:99999;font-family:'Sarabun',system-ui,sans-serif}
+#psdp-ov.on{display:grid}
+.psdp{width:min(430px,94vw);max-height:92vh;overflow:auto;background:var(--psdp-bg);color:var(--psdp-tx);border:1px solid var(--psdp-bd);border-radius:16px;padding:14px 16px 12px;box-shadow:0 24px 70px rgba(0,0,0,.55);-webkit-text-size-adjust:100%}
+.psdp-h{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:16px;padding-bottom:10px;border-bottom:1px solid var(--psdp-bd)}
+.psdp-x{border:0;background:none;color:var(--psdp-mu);font-size:20px;cursor:pointer;line-height:1}
+.psdp-s{padding:12px 0 6px;border-bottom:1px solid var(--psdp-bd)}
+.psdp-s:last-of-type{border-bottom:0}
+.psdp-t{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--psdp-mu);margin-bottom:8px}
+.psdp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.psdp-g.two{grid-template-columns:repeat(2,1fr)}
+.psdp-o{border:1.5px solid var(--psdp-bd);background:transparent;color:inherit;border-radius:12px;padding:10px 6px 8px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit}
+.psdp-o:hover{border-color:#F97316}
+.psdp-o.on{border-color:#F97316;background:rgba(249,115,22,.13)}
+.psdp-o b{font-size:13px}.psdp-o small{font-size:11px;color:var(--psdp-mu)}
+.psdp-sw{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:3px solid #F97316}
+.psdp-sw i{width:12px;height:12px;border-radius:50%;background:#F97316;display:block}
+.psdp-big{font-size:22px;font-weight:800;color:#F97316;line-height:1.1}
+.psdp-o:not(.on) .psdp-big{color:var(--psdp-tx)}
+.psdp-tip{font-size:11.5px;color:var(--psdp-mu);text-align:center;padding-top:8px}
+</style>
+<script>
+window.PSDP=(function(){
+  var K={theme:'psd_3d_theme',lang:'psd_3d_lang',font:'psd_3d_font'},DEF={theme:'dark',lang:'th',font:'sarabun'};
+  var FONTS={orbitron:"'Orbitron','Sarabun',system-ui,sans-serif",courier:"'Courier New','Sarabun',monospace",sarabun:"'Sarabun',system-ui,sans-serif"};
+  var PAL={dark:{bg:'#11161d',tx:'#e6edf3',mu:'#8b949e',bd:'#30363d'},gray:{bg:'#f3f4f6',tx:'#111827',mu:'#6b7280',bd:'#d1d5db'},blue:{bg:'#0c2149',tx:'#e0ecff',mu:'#93acd6',bd:'#1f4080'}};
+  var subs=[],ov=null;
+  function has(k){try{return localStorage.getItem(K[k])!=null}catch(e){return false}}
+  function get(k){try{var v=localStorage.getItem(K[k]);var x=v?JSON.parse(v):DEF[k];return (k==='theme'&&!PAL[x])||(k==='font'&&!FONTS[x])||(k==='lang'&&x!=='th'&&x!=='en')?DEF[k]:x}catch(e){return DEF[k]}}
+  function cur(){return{theme:get('theme'),lang:get('lang'),font:get('font')}}
+  function fire(){var c=cur();subs.forEach(function(f){try{f(c)}catch(e){console.error(e)}});if(ov&&ov.classList.contains('on'))render()}
+  function set(k,v){try{localStorage.setItem(K[k],JSON.stringify(v))}catch(e){}fire()}
+  function on(f){subs.push(f);try{f(cur())}catch(e){console.error(e)}}
+  function L(th,en){return get('lang')==='en'?en:th}
+  function render(){var c=cur(),p=PAL[c.theme],s=ov.style;s.setProperty('--psdp-bg',p.bg);s.setProperty('--psdp-tx',p.tx);s.setProperty('--psdp-mu',p.mu);s.setProperty('--psdp-bd',p.bd);
+    var opt=function(k,v,inner){return '<button type="button" class="psdp-o'+(c[k]===v?' on':'')+'" data-k="'+k+'" data-v="'+v+'">'+inner+'</button>'};
+    var sw=function(bg){return '<span class="psdp-sw" style="background:'+bg+'"><i></i></span>'};
+    ov.innerHTML='<div class="psdp" role="dialog" aria-modal="true"><div class="psdp-h"><span>⚙ Settings — Theme / Language</span><button class="psdp-x" data-x="1" aria-label="close">✕</button></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🎨 THEME / โทนสี</div><div class="psdp-g">'
+       +opt('theme','dark',sw('#0d1117')+'<b>🌙 Dark</b><small>พื้นเข้ม (Default)</small>')
+       +opt('theme','gray',sw('#e5e7eb')+'<b>☁ Gray</b><small>พื้นเทา</small>')
+       +opt('theme','blue',sw('#0c2149')+'<b>🌊 Deep Blue</b><small>พื้นน้ำเงินเข้ม</small>')+'</div></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🌐 ภาษา / LANGUAGE</div><div class="psdp-g two">'
+       +opt('lang','th','<span class="psdp-big">TH</span><b>ภาษาไทย</b><small>Thai</small>')
+       +opt('lang','en','<span class="psdp-big">EN</span><b>English</b><small>อังกฤษ</small>')+'</div></div>'
+     +'<div class="psdp-s"><div class="psdp-t">🔤 FONT / ตัวอักษร</div><div class="psdp-g">'
+       +opt('font','orbitron','<span class="psdp-big" style="font-family:Orbitron,sans-serif;font-size:18px">Aa</span><b style="font-family:Orbitron,sans-serif;font-size:12px">Orbitron</b><small>Digital · Tech</small>')
+       +opt('font','courier','<span class="psdp-big" style="font-family:\'Courier New\',monospace">Aa</span><b style="font-family:\'Courier New\',monospace">Courier New</b><small>Classic · Mono</small>')
+       +opt('font','sarabun','<span class="psdp-big" style="font-family:Sarabun,sans-serif">Aa ก</span><b style="font-family:Sarabun,sans-serif">Sarabun</b><small>Thai · Clean</small>')+'</div></div>'
+     +'<div class="psdp-tip">💡 Sarabun รองรับภาษาไทยดีที่สุด · Orbitron = Digital Style · Courier New = Classic Mono<br>ใช้ร่วมกันทั้ง 3D · หลังบ้าน · Mobile</div></div>'}
+  function open(){if(!ov){ov=document.createElement('div');ov.id='psdp-ov';document.body.appendChild(ov);
+      ov.addEventListener('click',function(e){var b=e.target.closest('[data-k]');if(b){set(b.dataset.k,b.dataset.v);return}if(e.target===ov||e.target.closest('[data-x]'))close()});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape')close()})}
+    render();ov.classList.add('on')}
+  function close(){if(ov)ov.classList.remove('on')}
+  window.addEventListener('storage',function(e){for(var k in K)if(e.key===K[k]){fire();break}});
+  return{get:get,set:set,has:has,cur:cur,on:on,L:L,open:open,close:close,FONTS:FONTS,PAL:PAL};
+})();
+</script>
+
 <div id="app">
   <header>
     <div class="brand"><div class="logo">3D-iFM</div><div><small>PSD 3D-eNGINNo</small><b>IFM SMART BUILDING</b></div></div>
@@ -149,6 +212,8 @@ a.chip{text-decoration:none;color:var(--tx)}
     <span class="chip" id="userBtn"></span>
     <a class="chip" href="admin.html" title="ระบบหลังบ้าน IFM (Back Office)">🖥 หลังบ้าน</a>
     <a class="chip" href="mobile.html" title="IFM Mobile">📱 Mobile</a>
+    <span class="chip" id="langBtn" title="เปลี่ยนภาษา / Language">🌐 TH</span>
+    <span class="chip" id="prefBtn" title="ธีม · ภาษา · ตัวอักษร">⚙</span>
     <span class="chip" id="dataBtn">{ } Data model</span>
     <span class="clock" id="clock"></span>
   </header>
@@ -467,7 +532,7 @@ scene.add(new THREE.HemisphereLight(0xdbeafe,0x1e293b,1.25));
 const sun = new THREE.DirectionalLight(0xffffff,1.7); sun.position.set(22,45,18); sun.castShadow = true;
 sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-32,right:32,top:32,bottom:-32,near:1,far:120});
 scene.add(sun);
-const grid = new THREE.GridHelper(200,100,0x16233b,0x111a2d); grid.position.y = -.42; scene.add(grid);
+let grid = new THREE.GridHelper(200,100,0x16233b,0x111a2d); grid.position.y = -.42; scene.add(grid);
 const root = new THREE.Group(); scene.add(root);
 
 const GB = new THREE.BoxGeometry(1,1,1), GC = new THREE.CylinderGeometry(1,1,1,20), GS = new THREE.SphereGeometry(1,16,12);
@@ -974,7 +1039,7 @@ function renderPanel(force){
   if(SEL && SEL.type==='room' && !roomDef(SEL.id)) SEL=null;
   if(!SEL){
     const open=s.wr.filter(w=>w.st!=='Completed').sort((a,b)=>a.pri.localeCompare(b.pri));
-    P.innerHTML = `<div class="ph"><h2>${B[BKEY].icon} ${B[BKEY].th} · ${B[BKEY].en}</h2><div class="sub">${MODE==='ifm'?`🔗 ข้อมูลจริงจาก IFM ${ifmSite()?'· อาคาร <b>'+ifmSite()+'</b>':''} ${ifmOnline()?'· ☁ Google Sheets':'· ข้อมูลในเครื่องนี้'}${IFM.err?' · <span style="color:#fca5a5">❌ '+IFM.err+'</span>':''}<br><a href="admin.html#helpdesk" style="color:#93c5fd">เปิด Helpdesk ในหลังบ้าน ›</a> · <a href="admin.html#bcs" style="color:#93c5fd">Building Critical Status ›</a>`:'🧪 Demo 3D · ภาพรวมสถานะอาคาร · คลิกห้องหรือเครื่องจักรในโมเดลเพื่อดูรายละเอียด'}</div></div>
+    P.innerHTML = `<div class="ph"><h2>${B[BKEY].icon} ${PSDP.L(B[BKEY].th+' · '+B[BKEY].en,B[BKEY].en)}</h2><div class="sub">${MODE==='ifm'?`🔗 ข้อมูลจริงจาก IFM ${ifmSite()?'· อาคาร <b>'+ifmSite()+'</b>':''} ${ifmOnline()?'· ☁ Google Sheets':'· ข้อมูลในเครื่องนี้'}${IFM.err?' · <span style="color:#fca5a5">❌ '+IFM.err+'</span>':''}<br><a href="admin.html#helpdesk" style="color:#93c5fd">เปิด Helpdesk ในหลังบ้าน ›</a> · <a href="admin.html#bcs" style="color:#93c5fd">Building Critical Status ›</a>`:'🧪 Demo 3D · ภาพรวมสถานะอาคาร · คลิกห้องหรือเครื่องจักรในโมเดลเพื่อดูรายละเอียด'}</div></div>
       <div class="sec"><h3>งานแจ้งซ่อมที่เปิดอยู่ <span>${open.length}</span></h3>${open.length?open.map(w=>`<div class="li" data-go="${w.room}"><span class="pri ${w.pri}">${w.pri}</span><div class="t"><div>${w.svc?SVC_IC[w.svc]||'':''} <b>${w.no}</b> ${w.title}</div><small>${roomDef(w.room)?.name} · ชั้น ${roomDef(w.room)?.floor} ${w.tech?'· '+w.tech:''}</small></div>${wrChip(w)}</div>`).join(''):'<div class="empty">ไม่มีงานค้าง 🎉</div>'}</div>
       <div class="sec"><h3>แม่บ้านกำลังปฏิบัติงาน <span>${Object.keys(s.cleaning).length}</span></h3>${Object.entries(s.cleaning).map(([id,c])=>`<div class="li" data-go="${id}">🧹<div class="t"><div>${roomDef(id)?.name}</div><small>${c.name} · ชั้น ${roomDef(id)?.floor}</small></div></div>`).join('')||'<div class="empty">—</div>'}</div>
       <div class="sec"><h3>Live Activity</h3><div class="feed">${s.log.map(l=>`<div><time>${l.t}</time>${l.m}</div>`).join('')}</div></div>`;
@@ -1199,6 +1264,97 @@ function showAccount(){ const u=ifmUser(), s=ifmSess()||{}; const sites=(s.sites
   $('lgOut').onclick=()=>{ try{localStorage.removeItem('psd_ifm_session');localStorage.removeItem('psd_ifm_m_user')}catch(e){} IFM.remote=null; IFM.err=''; closeModal(); renderUser(); log('⎋ ออกจากระบบแล้ว'); if(MODE==='ifm'){ IFM.lh=''; ifmRefresh(false); } renderSrc(); renderEmpty(); }; }
 $('userBtn').onclick=()=> ifmUser() ? showAccount() : showLogin();
 $('emptyLogin').onclick=()=>showLogin();
+/* ---------- i18n (TH → EN) สำหรับหน้า 3D: แปลข้อความบนหน้าจออัตโนมัติเมื่อเลือก English ---------- */
+const I18N={
+'ภาพรวมสถานะอาคาร · คลิกห้องหรือเครื่องจักรในโมเดลเพื่อดูรายละเอียด':'Building status overview · click a room or machine for details',
+'จำลองเหตุการณ์อัตโนมัติ (แจ้งซ่อม/แม่บ้าน/ประชุม)':'Auto-simulate events (repairs / housekeeping / meetings)',
+'โมเดลประกอบฉาก (ยังไม่ผูกทะเบียนทรัพย์สิน)':'Scene model (not linked to asset register)',
+'โมเดลประกอบฉาก — เพิ่มอุปกรณ์ในทะเบียนทรัพย์สิน (หลังบ้าน › Engineering) ให้พื้นที่นี้ แล้วจะผูกกับโมเดลอัตโนมัติ':'Scene model — add this equipment to the asset register (Back office › Engineering) for this area and it will link automatically',
+'ฐานข้อมูล Google Sheets เชื่อมไว้แล้ว — กรุณาเข้าสู่ระบบเพื่อโหลดข้อมูลอาคาร':'Google Sheets is connected — please sign in to load building data',
+'เปิดหลังบ้าน IFM ในเบราว์เซอร์นี้ เลือกธุรกิจนี้ แล้วเพิ่ม "พื้นที่ (Areas)" — ภาพ 3D จะสร้างจากพื้นที่เหล่านั้นอัตโนมัติ':'Open the IFM back office in this browser, choose this business and add "Areas" — the 3D view is built from them automatically',
+'ลาก = หมุน · คลิกขวาลาก = เลื่อน · ล้อ/＋－ = ซูม (ตรงตำแหน่งเมาส์) · ดับเบิลคลิก = ซูมเข้าจุดนั้น · 0 = มุมเริ่มต้น':'Drag = rotate · right-drag = pan · wheel/＋－ = zoom (at cursor) · double-click = zoom to point · 0 = reset view',
+'ซูม: ล้อเมาส์ / ปุ่ม + − / ลากแถบ / คีย์บอร์ด + −':'Zoom: mouse wheel / + − buttons / slider / keyboard + −',
+'เครื่องนี้ยังไม่ได้เชื่อมฐานข้อมูล Google Sheets — วาง':'This device is not connected to Google Sheets yet — paste the',
+'(ลงท้าย /exec) ที่ได้จากผู้ดูแลระบบ':'(ending in /exec) from your administrator',
+'หรือใช้โหมดสาธิต (admin / ifm2026) ที่หลังบ้าน ›':'or use demo mode (admin / ifm2026) in the back office ›',
+'ใช้บัญชีเดียวกับหลังบ้านและ Mobile':'Same account as the back office and Mobile',
+'อาการ / รายละเอียด เช่น แอร์ไม่เย็น':'Symptom / details e.g. AC not cooling',
+'สลับแหล่งข้อมูล: ข้อมูล IFM จริง / Demo 3D':'Switch data source: live IFM data / Demo 3D',
+'ข้อมูลจำลองสำหรับนำเสนอ':'Simulated data for presentations',
+'ลงทะเบียน / ลืมรหัสผ่าน ›':'Register / forgot password ›',
+'เปลี่ยนรหัสผ่าน / ตั้งค่า':'Change password / settings',
+'เปิดชั้นนี้เพื่อดูอุปกรณ์':'Open this floor to see equipment',
+'ยังไม่มีข้อมูลพื้นที่ของ':'No area data yet for',
+'งานแจ้งซ่อมที่เปิดอยู่':'Open work requests','แม่บ้านกำลังปฏิบัติงาน':'Housekeeping in progress',
+'เชื่อมต่อฐานข้อมูลแล้ว — เข้าสู่ระบบได้เลย':'Database connected — you can sign in now',
+'คนในพื้นที่ (ที่แสดง)':'People (shown)','เครื่องจักร / อุปกรณ์':'Machines / equipment','ค่าการทำงาน (Live)':'Live readings',
+'เจ้าของอาคาร / ลูกค้า':'Building owner / Client','ลูกค้า / ผู้มาติดต่อ':'Customer / Visitor','ช่าง / พนักงานบริการ':'Technician / Service staff',
+'กรุณาเข้าสู่ระบบใหม่':'Please sign in again','เซสชันหมดอายุ — กรุณาเข้าสู่ระบบใหม่':'Session expired — please sign in again',
+'ยังไม่ได้เข้าสู่ระบบ':'Not signed in','แจ้งงานได้อย่างเดียว':'can only raise requests','เข้าสู่ระบบด้วยบัญชี IFM':'Sign in with your IFM account',
+'แสดง/ซ่อนป้ายชื่อ':'Show / hide labels','มุมมองเริ่มต้น':'Default view','มุมบน (Plan)':'Top view (plan)','หมุนอัตโนมัติ':'Auto-rotate',
+'ระบบหลังบ้าน IFM (Back Office)':'IFM back office','กำลังดึงข้อมูลจาก Google Sheets…':'Loading from Google Sheets…','ดึงข้อมูลจาก Google Sheets ไม่สำเร็จ:':'Could not load from Google Sheets:',
+'ยังไม่มีฐานข้อมูล IFM ในเครื่องนี้ — เปิดหลังบ้านก่อน':'No IFM database on this device — open the back office first',
+'อาคารที่เข้าถึงได้':'Buildings','การเชื่อมต่อ':'Connection','บทบาท':'Role','อีเมล':'Email','บัญชีของฉัน':'My account',
+'ทำความสะอาดเสร็จ':'Cleaning done','จำลองเครื่องชำรุด':'Simulate breakdown','ซ่อมเสร็จ / เดินเครื่อง':'Repaired / run','ห้องประชุมใช้งาน':'Meeting rooms in use',
+'ไม่มีคนในพื้นที่':'Nobody here','เปิดหลังบ้าน IFM':'Open IFM back office','ใช้ Demo 3D':'Use Demo 3D','ภาพรวมทั้งอาคาร':'Whole building',
+'ทีมงานในพื้นที่':'Team on site','มีงานแจ้งซ่อม':'Has work request','ข้อมูลตัวอย่าง IFM':'IFM sample data','ข้อมูลจริงจาก IFM':'Live data from IFM',
+'เปิด Helpdesk ในหลังบ้าน ›':'Open Helpdesk in back office ›','ข้อมูลในเครื่องนี้':'local data','ในเครื่อง':'local','ออกจากระบบแล้ว':'Signed out',
+'พื้นที่วิกฤต':'Critical areas','เครื่องชำรุด':'Equipment down','ไม่มีงานค้าง':'No open jobs','ซูมไปที่ห้อง':'Zoom to room','แม่บ้านปฏิบัติงาน':'Housekeeping active',
+'กำลังตรวจสอบ…':'Checking…','ยินดีต้อนรับ':'Welcome','ออกจากระบบ':'Sign out','เข้าสู่ระบบ':'Sign in','เชื่อมต่อ':'Connect',
+'ส่งแจ้งซ่อม':'Submit request','ส่งแม่บ้าน':'Send housekeeper','เริ่มประชุม':'Start meeting','เลิกประชุม':'End meeting','พื้นที่ปกติ':'Normal areas',
+'พร้อมใช้งาน':'Ready','คนในพื้นที่':'People here','ข้อมูลจริง IFM':'Live IFM data','ข้อมูลจริง':'Live data','ข้อมูลตัวอย่าง':'Sample data',
+'รับงาน':'Accept','ปิดงาน':'Close job','รอรับงาน':'Waiting','กำลังดำเนินการ':'in progress','แจ้งซ่อม':'Report repair','แจ้ง':'Reported',
+'งานแจ้งซ่อม':'Work requests','คำสั่ง':'Actions','อุปกรณ์':'Equipment','สถานะห้อง':'Room status','ห้องประชุม':'Meeting room',
+'มีผู้เข้าพัก':'Occupied','ห้องว่าง (VC)':'Vacant (VC)','ใช้งาน':'In use','ว่าง':'Vacant','ปกติ':'Normal','วิกฤต':'Critical','ชั้น':'Floor',
+'หลังบ้าน':'Back office','ทั้งตึก':'Building','โซน':'Zone','ใกล้ชิด':'Close-up','ห้อง':'Room','ซูมเข้า (+)':'Zoom in (+)','ซูมออก (−)':'Zoom out (−)',
+'พนักงาน':'Staff','ช่าง Engineering':'Technician','ช่าง':'Technician','แม่บ้าน Housekeeping':'Housekeeper','แม่บ้าน':'Housekeeper','รปภ. Security':'Security guard','รปภ.':'Security',
+'ลูกค้า/ผู้ป่วย':'Guest / patient','ชำรุด':'Down','ทำความสะอาด':'Cleaning','ประชุมอยู่':'In meeting','แพทย์':'Doctor','พยาบาล':'Nurse','ผู้ป่วย':'Patient',
+'พ่อครัว / Cook':'Cook','นักเรียน':'Student','ครู':'Teacher','ผู้ดูแลระบบ (Admin)':'Administrator','ผู้จัดการอาคาร (FM)':'Facility manager','หัวหน้างาน':'Supervisor','ผู้แจ้งงาน':'Requester',
+'โรงพยาบาล':'Hospital','โรงงาน':'Factory','โรงแรม':'Hotel','ศูนย์ประชุม/นิทรรศการ':'Exhibition','อาคารสำนักงาน':'Office','ร้านอาหาร':'Restaurant','สถานศึกษา':'Education',
+'สำนักงาน':'Office','ห้อง Chiller':'Chiller room','ห้องปั๊ม':'Pump room','ห้องไฟฟ้า':'Electrical room','ห้องเครื่องปั่นไฟ':'Generator room','ทางเดิน':'Corridor','ห้องช่าง':'Workshop','ห้องเก็บของ':'Store room',
+'ผู้ป่วยนอก':'Outpatient','เคาน์เตอร์พยาบาล':'Nurse station','หอผู้ป่วย':'Ward','ห้องฉุกเฉิน':'Emergency','ห้องผ่าตัด':'Operating room','ห้องแล็บ':'Laboratory','ห้องยา':'Pharmacy',
+'คลังสินค้า':'Warehouse','สายการผลิต':'Production line','ห้องปั๊มลม':'Compressor room','แพ็กกิ้ง':'Packing','ล็อบบี้':'Lobby','ห้องอาหาร':'Dining','ครัว':'Kitchen','ห้องซักรีด':'Laundry',
+'ห้องพัก':'Guest room','ลงทะเบียน':'Registration','ฮอลล์นิทรรศการ':'Exhibition hall','ห้องสัมมนา':'Conference','ต้อนรับ':'Reception','ห้องผู้บริหาร':'Executive office','บาร์':'Bar',
+'ครัวเย็น':'Cold prep','ล้างจาน':'Dishwash','ห้องเย็น':'Cold store','ห้องเรียน':'Classroom','ห้องสมุด':'Library','ลานจอดรถ':'Car park','สวน / ภายนอก':'Garden / outdoor','ห้องน้ำ':'Toilet','พื้นที่':'Area',
+'สถานะ (IFM)':'Status (IFM)','ระบบ':'System','ยี่ห้อ':'Brand','PM ล่าสุด':'Last PM','PM ครั้งถัดไป':'Next PM','สถานะ':'Status','หยุดทำงาน':'Stopped','โหมด':'Mode','ทำงานปกติ':'Normal operation',
+'นั่งทำงาน':'Working at desk','เดินปฏิบัติงาน':'On the move','ปฏิบัติงานประจำจุด':'At workstation','กำลังนำเสนอ':'Presenting','พักรักษาตัว':'Resting (patient)','กำลังถูพื้น / ทำความสะอาด':'Mopping / cleaning','กำลังซ่อม':'Repairing',
+'ประชุม':'Meeting','นำเสนองานในที่ประชุม':'Presenting in meeting','เดินตรวจตราพื้นที่ (Patrol)':'Patrolling','รับประทานอาหาร':'Dining','กำลังประกอบอาหาร':'Cooking','เตรียมวัตถุดิบ':'Preparing ingredients',
+'กำลังสอน':'Teaching','เรียนอยู่':'In class','อ่านหนังสือ':'Reading','บรรณารักษ์':'Librarian','กำลังผ่าตัด':'In surgery','ตรวจรักษาฉุกเฉิน':'Emergency care','ควบคุมเครื่องจักร / ตรวจชิ้นงาน':'Operating machine / QC',
+'ข้อมูลอาคาร':'Building data','ลาก':'Drag','ตร.ม. (IFM)':'sqm (IFM)','ม.':'m',
+'เครื่องจักร':'machine','ชั้น ':'Floor ','โมเดล':'model','ห้องประชุมจากหน้า 3D':'meeting rooms from 3D',
+'เปิดระบบ':'System started','โหลดสถานะ':'loaded','งานแจ้งซ่อม':'work requests','รับงานแล้ว · ช่าง':'accepted · technician','ปิดงาน ·':'closed ·','เริ่มทำความสะอาด':'started cleaning','ทำความสะอาดเสร็จ':'cleaning done',
+'เริ่มประชุม (':'meeting started (','คน)':'people)','เลิกประชุม → ห้องว่าง':'meeting ended → vacant','แจ้งซ่อมใหม่':'New request','ชำรุด · เปิด':'down · opened','กลับมาทำงานปกติ':'back to normal',
+'บันทึกขึ้น Google Sheets แล้ว':'Saved to Google Sheets','Sync ไม่สำเร็จ:':'Sync failed:','แจ้งงาน':'Request'
+};
+const I18K=Object.keys(I18N).sort((a,b)=>b.length-a.length), TH_RE=/[฀-๿]/;
+const I18X=I18K.map(k=>[new RegExp('(?<![฀-๿])'+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![฀-๿])','g'),I18N[k]]);
+const isEN=()=>window.PSDP&&PSDP.get('lang')==='en';
+function trText(t){ if(!TH_RE.test(t)) return t; for(const [re,v] of I18X){ re.lastIndex=0; if(re.test(t)){ re.lastIndex=0; t=t.replace(re,v); if(!TH_RE.test(t)) break; } } return t; }
+const TR_ORIG=new WeakMap(), TR_NODES=new Set();
+function trTree(root){ if(!isEN()||!root) return;
+  const doNode=n=>{ const v=n.nodeValue; if(v&&TH_RE.test(v)){ if(!TR_ORIG.has(n)) TR_ORIG.set(n,v); TR_NODES.add(n); n.nodeValue=trText(v); } };
+  const doEl=el=>{ ['title','placeholder','aria-label'].forEach(a=>{ const v=el.getAttribute&&el.getAttribute(a); if(v&&TH_RE.test(v)){ if(!el.hasAttribute('data-th-'+a)) el.setAttribute('data-th-'+a,v); el.setAttribute(a,trText(v)); } }); };
+  if(root.nodeType===3){ doNode(root); return; } if(root.nodeType!==1||/^(SCRIPT|STYLE)$/.test(root.tagName)) return;
+  doEl(root); root.querySelectorAll('[title],[placeholder],[aria-label]').forEach(doEl);
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>/^(SCRIPT|STYLE)$/.test(n.parentNode&&n.parentNode.tagName)?2:1}); let n; while((n=w.nextNode())) doNode(n); }
+function trRestore(){ TR_NODES.forEach(n=>{ if(n.isConnected&&TR_ORIG.has(n)) n.nodeValue=TR_ORIG.get(n); }); TR_NODES.clear();
+  document.querySelectorAll('[data-th-title],[data-th-placeholder],[data-th-aria-label]').forEach(el=>['title','placeholder','aria-label'].forEach(a=>{ const v=el.getAttribute('data-th-'+a); if(v!=null){ el.setAttribute(a,v); el.removeAttribute('data-th-'+a); } })); }
+const TR_OBS=new MutationObserver(ms=>{ if(!isEN()) return; TR_OBS.disconnect(); ms.forEach(m=>{ if(m.type==='characterData') trTree(m.target); else m.addedNodes.forEach(trTree); }); TR_OBS.observe(document.body,{childList:true,subtree:true,characterData:true}); });
+TR_OBS.observe(document.body,{childList:true,subtree:true,characterData:true});
+
+/* ---------- Theme / Language / Font (ใช้ร่วมกับหลังบ้านและ Mobile) ---------- */
+const TH3={dark:{bg:'#0b1220',pn:'#0f172a',pn2:'#111c33',bd:'#1f2b44',tx:'#e2e8f0',mu:'#8a9ab5',in:'#0a1324',ovl:'rgba(15,23,42,.92)',sc:0x0b1220,g1:0x16233b,g2:0x111a2d},
+  gray:{bg:'#e9ecf0',pn:'#ffffff',pn2:'#f1f3f6',bd:'#d3d9e1',tx:'#0f172a',mu:'#64748b',in:'#f8fafc',ovl:'rgba(255,255,255,.94)',sc:0xdde2e8,g1:0xbcc4ce,g2:0xccd2da},
+  blue:{bg:'#071633',pn:'#0c2149',pn2:'#102a5c',bd:'#1f4080',tx:'#e0ecff',mu:'#93acd6',in:'#081a3d',ovl:'rgba(12,33,73,.94)',sc:0x071633,g1:0x1a3570,g2:0x112652}};
+let PREF_LANG=null;
+function applyPrefs3D(p){ const t=TH3[p.theme]||TH3.dark, r=document.documentElement.style;
+  ['bg','pn','pn2','bd','tx','mu','in','ovl'].forEach(k=>r.setProperty('--'+k,t[k])); r.setProperty('--font',PSDP.FONTS[p.font]); document.documentElement.lang=p.lang;
+  scene.background.setHex(t.sc); scene.fog.color.setHex(t.sc); scene.fog.near=p.theme==='gray'?220:90; scene.fog.far=p.theme==='gray'?520:190; document.documentElement.dataset.theme=p.theme; scene.remove(grid); grid.geometry.dispose(); grid=new THREE.GridHelper(200,100,t.g1,t.g2); grid.position.y=-.42; scene.add(grid);
+  $('langBtn').textContent='🌐 '+(p.lang==='en'?'EN':'TH');
+  if(PREF_LANG!==null && PREF_LANG!==p.lang){ if(p.lang==='th') trRestore(); renderBuildings(); renderTabs(); renderKPI(); renderSrc(); renderUser(); renderPanel(true); renderEmpty(); sync(); }
+  PREF_LANG=p.lang; if(p.lang==='en') trTree(document.body); }
+$('langBtn').onclick=()=>PSDP.set('lang',PSDP.get('lang')==='en'?'th':'en');
+$('prefBtn').onclick=()=>PSDP.open();
 (function boot(){ const q=new URLSearchParams(location.search), qb=q.get('b'), srv=q.get('srv')||q.get('server');
   if(srv&&/^https:\/\/script\.google\.com\//.test(srv)&&srv!==ifmCfg().url){ LSs('psd_ifm_gas',Object.assign(ifmCfg(),{url:srv})); try{localStorage.removeItem('psd_ifm_session')}catch(e){} LSs('psd_3d_src','ifm'); }
   if(srv){ try{ history.replaceState(null,'',location.pathname+location.hash); }catch(e){} }
@@ -1210,6 +1366,7 @@ $('emptyLogin').onclick=()=>showLogin();
   renderBuildings(); resize(); renderSrc(); renderUser();
   if(ifmCfg().url && !ifmUser()) setTimeout(()=>showLogin(),600);
   if(MODE==='ifm'){ VIEW='ALL'; ifmRefresh(false); if(!IFM.lh) build(); ifmPull(true).then(ok=>{ if(ok) ifmRefresh(false); renderSrc(); }); } else build();
+  PSDP.on(applyPrefs3D);
   $('loading').remove(); loop(); })();
 </script>
 </body>
